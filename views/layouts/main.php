@@ -41,7 +41,7 @@ AppAsset::register($this);
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
             ['label' => 'Accueil', 'url' => ['/site/index']],
-            ['label' => 'A propos', 'url' => ['/site/about']],
+            // ['label' => 'A propos', 'url' => ['/site/about']],
             ['label' => 'Contact', 'url' => ['/site/contact']],
 /*            ['label' => 'Canevas', 'url' => ['/canevas/index']],
             ['label' => 'Exercice', 'url' => ['/exercice/index']],
@@ -50,7 +50,7 @@ AppAsset::register($this);
             ['label' => 'Unite', 'url' => ['/unite/index']],
             ['label' => 'Utilisateur', 'url' => ['/utilisateur/index']],*/
             Yii::$app->user->isGuest ? (
-                ['label' => 'Connexion', 'url' => ['/site/login']]
+                ['label' => 'A propos', 'url' => ['/site/about']]
             ) : (
                 // if admin
                 '<li><a href="'.Url::to(['canevas/index']).'">Canevas</a></li>'.

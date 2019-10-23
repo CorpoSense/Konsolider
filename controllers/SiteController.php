@@ -62,7 +62,18 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        // if (Yii::$app->user->isGuest) {
+        //     return $this->redirect(['site/login']);
+        // }
+
+        $model = new LoginForm();
+        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            return $this->goBack();
+        }
+
+        $model->password = '';
+
+        return $this->render('index', [ 'model' => $model ]);
     }
 
     /**
