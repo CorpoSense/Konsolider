@@ -1,100 +1,53 @@
-<?php use yii\helpers\Url; ?>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title></title>
-    <link rel="stylesheet" href="login.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css" />
-    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/all.js" integrity="sha384-xymdQtn1n3lH2wcu0qhcdaOpQwyoarkgLVxC/wZ5q7h9gHtxICrpcaSUfygqZGOe" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="css/fontawesome-all.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<?php
 
-    
-</head>
-<body style="background-color:#F5F5F5">
-    <div class="columns" style="background-color:#F5F5F5">
+/* @var $this yii\web\View */
 
-    <!-- La premiere colonne qui contient les inputs et tout !-->   
-        
-        <div class="column is-half " >
+$this->title = 'My Yii Application';
+?>
+<div class="site-index">
 
-            <article class="" style="margin-top:50px;margin-left:120px;padding-right:px;height:px;padding-top:40px;border-radius:%;width:600px;background-color:">
+    <div class="jumbotron">
+        <h1>Congratulations!</h1>
 
-            <div class="">
-    <!-- L'image CETIM !-->
-                
-                <div class="" style="padding-left:265px;">
-                  
-                    <img src="<?= Url::to('@web/assets/img/cetim.png')?>" style="height:100px;width:120px;border-radius:50%;margin-bottom:40px;margin-left:px;padding-left:px;">
-                </div>
-    <!-- Le message BIENVENUE !-->              
-                <div class="field" style="padding-left:45px;">  
-                    <span class="tag is-primary is-medium" style="margin-left:130px;width:299px;" >Bienvenue !</span>
-                    
-                </div>
+        <p class="lead">You have successfully created your Yii-powered application.</p>
 
-                
-            
-            
-            </div>  
-        <form method="POST" action="<?= ?>">
-          <!-- Les INPUTS !-->    
-        <div class="section" style="background-color:">
-          <div class="">
-
-          <!-- MATRICULEE !-->
-
-            <div class="field" style="padding-left:150px;">
-              <p class="control has-icons-left has-icons-right">
-                  <input class="input" name="email"type="text" placeholder="Matricule" style="margin-bottom:10px;width:300px;">
-          <!-- ICONE MATRICULE !-->       
-                    <span class="icon is-small is-left">
-                      <i class="fas fa-id-badge"></i>
-                    </span>
-              </p>        
-          </div>
-        
-          <!-- PASSWORD !-->
-          <div class="field" style="padding-left:150px;">
-            <p class="control has-icons-left has-icons-right">        
-              <input class="input" name="pass" type="password" placeholder="Passowrd" style="margin-bottom:20px;width:300px;">
-          <!-- ICONE PASSWORD !-->    
-                <span class="icon is-small is-left">
-                  <i class="fas fa-unlock"></i>
-                </span> 
-            </p>    
-          </div>
-          <!-- BOUTTON SE CONNECTER !-->
-          <div class="field" style="padding-left:150px;">
-            <p class="control has-icons-left has-icons-right">
-
-              <button type="submit" class="button is-info">Se connecter</button>
-            
-            </p>  
-          </div>  
- 
-      
-        </div>            
-
-      </div>
-    </article>
-  </div>
-          
-        </form>
-    
-
-<!-- L'image TYPEWRITER !-->
-    <div class="column" style="background-color:#F5F5F5">
-        <article class="" style=" background-color:;margin-top:50px;margin-right:00px;margin-left:200px;padding-bottom:-5px;">
-            <img src="<?= Url::to('@web/assets/img/typewriter.jpg')?>" style="width:380px;height:480px;">
-        </article>  
+        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
     </div>
-    <!--partie verfication des données-->
-  
-   
-    
-    
 
-</body>
-</html>
+    <div class="body-content">
+
+        <div class="row">
+            <div class="col-lg-4">
+                <h2>Heading</h2>
+
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                    fugiat nulla pariatur.</p>
+
+                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
+            </div>
+            <div class="col-lg-4">
+                <h2>Heading</h2>
+
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                    fugiat nulla pariatur.</p>
+
+                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
+            </div>
+            <div class="col-lg-4">
+                <h2>Heading</h2>
+
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                    fugiat nulla pariatur.</p>
+
+                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
+            </div>
+        </div>
+
+    </div>
+</div>
