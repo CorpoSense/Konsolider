@@ -9,6 +9,7 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\Unite;
 
 class SiteController extends Controller
 {
@@ -61,7 +62,6 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-         $this->layout = false;
         return $this->render('index');
     }
 
@@ -70,6 +70,74 @@ class SiteController extends Controller
      *
      * @return Response|string
      */
-   
+    public function actionLogin()
+    {
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
 
+        $model = new LoginForm();
+        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            return $this->goBack();
+        }
+
+        $model->password = '';
+        return $this->render('login', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Logout action.
+     *
+     * @return Response
+     */
+    public function actionLogout()
+    {
+        Yii::$app->user->logout();
+
+        return $this->goHome();
+    }
+
+    /**
+     * Displays contact page.
+     *
+     * @return Response|string
+     */
+    public function actionContact()
+    {
+        $model = new ContactForm();
+        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
+            Yii::$app->session->setFlash('contactFormSubmitted');
+
+            return $this->refresh();
+        }
+        return $this->render('contact', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Displays about page.
+     *
+     * @return string
+     */
+    public function actionAbout()
+    {
+        return $this->render('about');
+    }
+
+
+    public function actionHello()
+    {
+      // $unite = Unite::findOne(1);
+      $unite = Unite::find()->one();
+      /*$unite = new Unite();
+      $unite->nom = "ETH";
+      $unite->responsable = "Bachir";
+      // $unite->created_at = date('Y-m-d');
+      // $unite->updated_at = date('Y-m-d');
+      $unite->save(false);*/
+      return $this->render('hello',['unite' => $unite]);
+    }
 }
