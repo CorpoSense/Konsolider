@@ -8,9 +8,14 @@ use Yii;
  * This is the model class for table "exercice".
  *
  * @property int $id
- * @property string $canevas_id
- * @property string $rapport_id
- * @property string $unite_id
+ * @property int $canevas_id
+ * @property int $rapport_id
+ * @property int $unite_id
+ *
+ * @property Canevas $canevas
+ * @property Rapport $rapport
+ * @property Unite $unite
+ * @property Realisation[] $realisations
  */
 class Exercice extends \yii\db\ActiveRecord
 {
@@ -30,6 +35,9 @@ class Exercice extends \yii\db\ActiveRecord
         return [
             [['canevas_id', 'rapport_id', 'unite_id'], 'required'],
             [['canevas_id', 'rapport_id', 'unite_id'], 'integer'],
+            [['canevas_id'], 'exist', 'skipOnError' => true, 'targetClass' => Canevas::className(), 'targetAttribute' => ['canevas_id' => 'id']],
+            [['rapport_id'], 'exist', 'skipOnError' => true, 'targetClass' => Rapport::className(), 'targetAttribute' => ['rapport_id' => 'id']],
+            [['unite_id'], 'exist', 'skipOnError' => true, 'targetClass' => Unite::className(), 'targetAttribute' => ['unite_id' => 'id']],
         ];
     }
 
@@ -44,5 +52,37 @@ class Exercice extends \yii\db\ActiveRecord
             'rapport_id' => 'Rapport ID',
             'unite_id' => 'Unite ID',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCanevas()
+    {
+        return $this->hasOne(Canevas::className(), ['id' => 'canevas_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRapport()
+    {
+        return $this->hasOne(Rapport::className(), ['id' => 'rapport_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUnite()
+    {
+        return $this->hasOne(Unite::className(), ['id' => 'unite_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRealisations()
+    {
+        return $this->hasMany(Realisation::className(), ['exercice_id' => 'id']);
     }
 }

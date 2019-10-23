@@ -13,20 +13,13 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
-        'options' => [
-            'data-pjax' => 1
-        ],
     ]); ?>
 
-    <?= $form->field($model, 'unite_id') ?>
+    <?= $form->field($model, 'id') ?>
 
     <?= $form->field($model, 'nom') ?>
 
     <?= $form->field($model, 'responsable') ?>
-
-    <?= $form->field($model, 'created_at') ?>
-
-    <?= $form->field($model, 'updated_at') ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>

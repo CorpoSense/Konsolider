@@ -13,7 +13,10 @@ use Yii;
  * @property string $type
  * @property string $unite_mesure
  * @property int $requis
- * @property string $canvevas_id
+ * @property int $canvevas_id
+ *
+ * @property Canevas $canvevas
+ * @property Realisation[] $realisations
  */
 class Indicateur extends \yii\db\ActiveRecord
 {
@@ -32,8 +35,10 @@ class Indicateur extends \yii\db\ActiveRecord
     {
         return [
             [['nom', 'description', 'type', 'unite_mesure', 'requis', 'canvevas_id'], 'required'],
-            [['nom', 'description', 'requis', 'canvevas_id'], 'integer'],
-            [['type', 'unite_mesure'], 'string', 'max' => 255],
+            [['description'], 'string'],
+            [['requis', 'canvevas_id'], 'integer'],
+            [['nom', 'type', 'unite_mesure'], 'string', 'max' => 255],
+            [['canvevas_id'], 'exist', 'skipOnError' => true, 'targetClass' => Canevas::className(), 'targetAttribute' => ['canvevas_id' => 'id']],
         ];
     }
 
@@ -51,5 +56,21 @@ class Indicateur extends \yii\db\ActiveRecord
             'requis' => 'Requis',
             'canvevas_id' => 'Canvevas ID',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCanvevas()
+    {
+        return $this->hasOne(Canevas::className(), ['id' => 'canvevas_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRealisations()
+    {
+        return $this->hasMany(Realisation::className(), ['mesure_id' => 'id']);
     }
 }

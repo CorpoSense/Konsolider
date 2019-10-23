@@ -1,17 +1,18 @@
 <?php
 
 namespace app\models;
-use yii\behaviors\TimestampBehavior;
+
 use Yii;
 
 /**
  * This is the model class for table "unite".
  *
- * @property int $unite_id
+ * @property int $id
  * @property string $nom
  * @property string $responsable
- * @property string $created_at
- * @property string $updated_at
+ *
+ * @property Exercice[] $exercices
+ * @property Utilisateur[] $utilisateurs
  */
 class Unite extends \yii\db\ActiveRecord
 {
@@ -29,9 +30,8 @@ class Unite extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nom', 'responsable' , 'created_at', 'updated_at'], 'required'],
-            [['created_at', 'updated_at'], 'safe'],
-            [['nom', 'responsable'], 'string', 'max' => 250],
+            [['nom', 'responsable'], 'required'],
+            [['nom', 'responsable'], 'string', 'max' => 255],
         ];
     }
 
@@ -41,17 +41,25 @@ class Unite extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'unite_id' => 'Unite ID',
+            'id' => 'ID',
             'nom' => 'Nom',
             'responsable' => 'Responsable',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
         ];
     }
-    public function behaviors()
-{
-    return [
-        TimestampBehavior::className(),
-    ];
-}
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getExercices()
+    {
+        return $this->hasMany(Exercice::className(), ['unite_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUtilisateurs()
+    {
+        return $this->hasMany(Utilisateur::className(), ['unite_id' => 'id']);
+    }
 }

@@ -17,7 +17,7 @@ class UniteSearch extends Unite
     public function rules()
     {
         return [
-            [['unite_id', 'created_at', 'updated_at'], 'integer'],
+            [['id'], 'integer'],
             [['nom', 'responsable'], 'safe'],
         ];
     }
@@ -58,9 +58,7 @@ class UniteSearch extends Unite
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'unite_id' => $this->unite_id,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'id' => $this->id,
         ]);
 
         $query->andFilterWhere(['like', 'nom', $this->nom])

@@ -10,6 +10,9 @@ use Yii;
  * @property int $id
  * @property string $nom
  * @property string $description
+ *
+ * @property Exercice[] $exercices
+ * @property Indicateur[] $indicateurs
  */
 class Canevas extends \yii\db\ActiveRecord
 {
@@ -42,5 +45,21 @@ class Canevas extends \yii\db\ActiveRecord
             'nom' => 'Nom',
             'description' => 'Description',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getExercices()
+    {
+        return $this->hasMany(Exercice::className(), ['canevas_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getIndicateurs()
+    {
+        return $this->hasMany(Indicateur::className(), ['canvevas_id' => 'id']);
     }
 }

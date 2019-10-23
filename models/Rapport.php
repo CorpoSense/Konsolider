@@ -11,6 +11,8 @@ use Yii;
  * @property string $nom
  * @property string $debut
  * @property string $fin
+ *
+ * @property Exercice[] $exercices
  */
 class Rapport extends \yii\db\ActiveRecord
 {
@@ -45,5 +47,13 @@ class Rapport extends \yii\db\ActiveRecord
             'debut' => 'Debut',
             'fin' => 'Fin',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getExercices()
+    {
+        return $this->hasMany(Exercice::className(), ['rapport_id' => 'id']);
     }
 }

@@ -37,7 +37,7 @@ class CanevasController extends Controller
     {
         $searchModel = new CanevasSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

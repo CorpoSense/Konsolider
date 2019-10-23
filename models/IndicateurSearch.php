@@ -17,8 +17,8 @@ class IndicateurSearch extends Indicateur
     public function rules()
     {
         return [
-            [['id', 'nom', 'description', 'requis', 'canvevas_id'], 'integer'],
-            [['type', 'unite_mesure'], 'safe'],
+            [['id', 'requis', 'canvevas_id'], 'integer'],
+            [['nom', 'description', 'type', 'unite_mesure'], 'safe'],
         ];
     }
 
@@ -59,13 +59,13 @@ class IndicateurSearch extends Indicateur
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'nom' => $this->nom,
-            'description' => $this->description,
             'requis' => $this->requis,
             'canvevas_id' => $this->canvevas_id,
         ]);
 
-        $query->andFilterWhere(['like', 'type', $this->type])
+        $query->andFilterWhere(['like', 'nom', $this->nom])
+            ->andFilterWhere(['like', 'description', $this->description])
+            ->andFilterWhere(['like', 'type', $this->type])
             ->andFilterWhere(['like', 'unite_mesure', $this->unite_mesure]);
 
         return $dataProvider;
