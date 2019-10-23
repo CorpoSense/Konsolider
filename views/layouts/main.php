@@ -40,8 +40,8 @@ AppAsset::register($this);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
+            ['label' => 'Accueil', 'url' => ['/site/index']],
+            ['label' => 'A propos', 'url' => ['/site/about']],
             ['label' => 'Contact', 'url' => ['/site/contact']],
 /*            ['label' => 'Canevas', 'url' => ['/canevas/index']],
             ['label' => 'Exercice', 'url' => ['/exercice/index']],
@@ -50,7 +50,7 @@ AppAsset::register($this);
             ['label' => 'Unite', 'url' => ['/unite/index']],
             ['label' => 'Utilisateur', 'url' => ['/utilisateur/index']],*/
             Yii::$app->user->isGuest ? (
-                ['label' => 'Login', 'url' => ['/site/login']]
+                ['label' => 'Connexion', 'url' => ['/site/login']]
             ) : (
                 // if admin
                 '<li><a href="'.Url::to(['canevas/index']).'">Canevas</a></li>'.
@@ -64,7 +64,7 @@ AppAsset::register($this);
                 '<li>'
                 . Html::beginForm(['/site/logout'], 'post')
                 . Html::submitButton(
-                    'Logout (' . Yii::$app->user->identity->username . ')',
+                    'Déconnexion (' . Yii::$app->user->identity->username . ')',
                     ['class' => 'btn btn-link logout']
                 )
                 . Html::endForm()
