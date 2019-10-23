@@ -4,15 +4,13 @@
 
 use yii\helpers\Html;
 
-$this->title = 'Consilider';
+$this->title = 'A propos';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-about">
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        This is the About page. You may modify the following file to customize its content:
-    </p>
+    <p>Cette application permet de récolter les données des utilisateurs selon les indicateurs...</p>
 
-    
+
 </div>
