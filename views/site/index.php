@@ -38,7 +38,7 @@
             
             
             </div>  
-        <form method="POST" action="">
+        <form method="POST" action="<?= ?>">
           <!-- Les INPUTS !-->    
         <div class="section" style="background-color:">
           <div class="">
