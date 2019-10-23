@@ -55,6 +55,10 @@ AppAsset::register($this);
                 // if admin
                 '<li><a href="'.Url::to(['canevas/index']).'">Canevas</a></li>'.
                 '<li><a href="'.Url::to(['exercice/index']).'">Exercice</a></li>'.
+                '<li><a href="'.Url::to(['indicateur/index']).'">Indicateur</a></li>'.
+                '<li><a href="'.Url::to(['rapport/index']).'">Rapport</a></li>'.
+                '<li><a href="'.Url::to(['unite/index']).'">Unite</a></li>'.
+                '<li><a href="'.Url::to(['utilisateur/index']).'">Utilisateur</a></li>'.
                 // TODO: create other links
                 // if not admin
                 '<li>'
