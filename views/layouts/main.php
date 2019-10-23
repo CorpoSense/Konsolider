@@ -5,12 +5,14 @@
 
 use app\widgets\Alert;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 
 AppAsset::register($this);
+
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -41,15 +43,20 @@ AppAsset::register($this);
             ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'About', 'url' => ['/site/about']],
             ['label' => 'Contact', 'url' => ['/site/contact']],
-            ['label' => 'Canevas', 'url' => ['/canevas/index']],
+/*            ['label' => 'Canevas', 'url' => ['/canevas/index']],
             ['label' => 'Exercice', 'url' => ['/exercice/index']],
             ['label' => 'Indicateur', 'url' => ['/indicateur/index']],
             ['label' => 'Rapport', 'url' => ['/rapport/index']],
             ['label' => 'Unite', 'url' => ['/unite/index']],
-            ['label' => 'Utilisateur', 'url' => ['/utilisateur/index']],
+            ['label' => 'Utilisateur', 'url' => ['/utilisateur/index']],*/
             Yii::$app->user->isGuest ? (
                 ['label' => 'Login', 'url' => ['/site/login']]
             ) : (
+                // if admin
+                '<li><a href="'.Url::to(['canevas/index']).'">Canevas</a></li>'.
+                '<li><a href="'.Url::to(['exercice/index']).'">Exercice</a></li>'.
+                // TODO: create other links
+                // if not admin
                 '<li>'
                 . Html::beginForm(['/site/logout'], 'post')
                 . Html::submitButton(
