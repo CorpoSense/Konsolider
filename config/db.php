@@ -2,7 +2,7 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=127.0.0.1;dbname=consoliderdb',
+    'dsn' => 'mysql:host=127.0.0.1:3306;dbname=consoliderdb',
     'username' => 'root',
     'password' => '',
     'charset' => 'utf8',

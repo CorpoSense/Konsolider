@@ -29,7 +29,7 @@ class m191026_205319_Indicateur extends Migration
             ],$tableOptions
         );
         $this->createIndex('Indicateur_fk0','{{%Indicateur}}',['canvevas_id'],false);
-
+       
     }
 
     public function safeDown()
