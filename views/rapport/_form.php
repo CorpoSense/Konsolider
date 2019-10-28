@@ -3,6 +3,8 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
+use kartik\date\DatePicker;
+
 /* @var $this yii\web\View */
 /* @var $model app\models\Rapport */
 /* @var $form yii\widgets\ActiveForm */
@@ -14,10 +16,26 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'nom')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'debut')->textInput() ?>
+    <?php //echo $form->field($model, 'debut')->textInput() ?>
+    
+    <?= $form->field($model, 'debut')->widget(DatePicker::class, [
+        'type' => DatePicker::TYPE_INPUT,
+        'options' => ['placeholder' =>  $model->getAttributeLabel('date_début')],
+        'pluginOptions' => [
+            'format' => 'yyyy-mm-dd'
+        ]
+    ]) ?>
 
-    <?= $form->field($model, 'fin')->textInput() ?>
+    <?php //echo $form->field($model, 'fin')->textInput() ?>
 
+    <?= $form->field($model, 'fin')->widget(DatePicker::class, [
+        'type' => DatePicker::TYPE_INPUT,
+        'options' => ['placeholder' =>  $model->getAttributeLabel('date_fin')],
+        'pluginOptions' => [
+            'format' => 'yyyy-mm-dd'
+        ]
+    ]) ?>
+    
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
     </div>

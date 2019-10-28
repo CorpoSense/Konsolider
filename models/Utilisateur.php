@@ -74,6 +74,10 @@ class Utilisateur extends \yii\db\ActiveRecord
         return $this->hasOne(Unite::className(), ['id' => 'unite_id']);
     }
     
+    function getUnites() {
+        return Unite::findAll([]);
+    }
+    
     /**
      * @return \yii\db\ActiveQuery
      */
