@@ -5,16 +5,17 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "realisation".
+ * This is the model class for table "Realisation".
  *
  * @property int $id
  * @property string $prevue
  * @property string $realise
- * @property int $mesure_id
+ * @property int $indicateur_id
  * @property int $exercice_id
  * @property int $utilisateur_id
+ * @property int $etat
  *
- * @property Indicateur $mesure
+ * @property Indicateur $indicateur
  * @property Exercice $exercice
  * @property Utilisateur $utilisateur
  */
@@ -25,7 +26,7 @@ class Realisation extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'realisation';
+        return 'Realisation';
     }
 
     /**
@@ -34,10 +35,10 @@ class Realisation extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['prevue', 'realise', 'mesure_id', 'exercice_id', 'utilisateur_id'], 'required'],
+            [['prevue', 'realise', 'indicateur_id', 'exercice_id', 'utilisateur_id', 'etat'], 'required'],
             [['prevue', 'realise'], 'number'],
-            [['mesure_id', 'exercice_id', 'utilisateur_id'], 'integer'],
-            [['mesure_id'], 'exist', 'skipOnError' => true, 'targetClass' => Indicateur::className(), 'targetAttribute' => ['mesure_id' => 'id']],
+            [['indicateur_id', 'exercice_id', 'utilisateur_id', 'etat'], 'integer'],
+            [['indicateur_id'], 'exist', 'skipOnError' => true, 'targetClass' => Indicateur::className(), 'targetAttribute' => ['indicateur_id' => 'id']],
             [['exercice_id'], 'exist', 'skipOnError' => true, 'targetClass' => Exercice::className(), 'targetAttribute' => ['exercice_id' => 'id']],
             [['utilisateur_id'], 'exist', 'skipOnError' => true, 'targetClass' => Utilisateur::className(), 'targetAttribute' => ['utilisateur_id' => 'id']],
         ];
@@ -52,18 +53,19 @@ class Realisation extends \yii\db\ActiveRecord
             'id' => 'ID',
             'prevue' => 'Prevue',
             'realise' => 'Realise',
-            'mesure_id' => 'Mesure ID',
+            'indicateur_id' => 'Indicateur ID',
             'exercice_id' => 'Exercice ID',
             'utilisateur_id' => 'Utilisateur ID',
+            'etat' => 'Etat',
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getMesure()
+    public function getIndicateur()
     {
-        return $this->hasOne(Indicateur::className(), ['id' => 'mesure_id']);
+        return $this->hasOne(Indicateur::className(), ['id' => 'indicateur_id']);
     }
 
     /**

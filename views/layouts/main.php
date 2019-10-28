@@ -51,6 +51,7 @@ AppAsset::register($this);
                 '<li><a href="'.Url::to(['indicateur/index']).'">Indicateur</a></li>'.
                 '<li><a href="'.Url::to(['rapport/index']).'">Rapport</a></li>'.
                 '<li><a href="'.Url::to(['exercice/index']).'">Exercice</a></li>'.
+                '<li><a href="'.Url::to(['realisation/index']).'">Realisations</a></li>'.
                 '<li><a href="'.Url::to(['utilisateur/index']).'">Utilisateur</a></li>'.
                 // TODO: create other links
                 // if not admin

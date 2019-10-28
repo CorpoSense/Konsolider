@@ -53,8 +53,8 @@ class Utilisateur extends \yii\db\ActiveRecord
             'id' => 'ID',
             'nom' => 'Nom',
             'prenom' => 'Prenom',
-            'unite_id' => 'Unite ID',
-            'user_id' => 'User ID',
+            'unite_id' => 'Unite',
+            'user_id' => 'User',
         ];
     }
 

@@ -25,6 +25,8 @@ class m191026_205321_Realisation extends Migration
                 'indicateur_id'=> $this->integer(11)->notNull(),
                 'exercice_id'=> $this->integer(11)->notNull(),
                 'utilisateur_id'=> $this->integer(11)->notNull(),
+                'etat'=> $this->integer(11)->notNull(),
+                
             ],$tableOptions
         );
         $this->createIndex('Realisation_fk1','{{%Realisation}}',['exercice_id'],false);

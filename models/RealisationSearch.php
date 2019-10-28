@@ -17,7 +17,7 @@ class RealisationSearch extends Realisation
     public function rules()
     {
         return [
-            [['id', 'mesure_id', 'exercice_id', 'utilisateur_id'], 'integer'],
+            [['id', 'indicateur_id', 'exercice_id', 'utilisateur_id', 'etat'], 'integer'],
             [['prevue', 'realise'], 'number'],
         ];
     }
@@ -61,9 +61,10 @@ class RealisationSearch extends Realisation
             'id' => $this->id,
             'prevue' => $this->prevue,
             'realise' => $this->realise,
-            'mesure_id' => $this->mesure_id,
+            'indicateur_id' => $this->indicateur_id,
             'exercice_id' => $this->exercice_id,
             'utilisateur_id' => $this->utilisateur_id,
+            'etat' => $this->etat,
         ]);
 
         return $dataProvider;

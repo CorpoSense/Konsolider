@@ -13,9 +13,6 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
-        'options' => [
-            'data-pjax' => 1
-        ],
     ]); ?>
 
     <?= $form->field($model, 'id') ?>
@@ -24,11 +21,13 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'realise') ?>
 
-    <?= $form->field($model, 'mesure_id') ?>
+    <?= $form->field($model, 'indicateur_id') ?>
 
     <?= $form->field($model, 'exercice_id') ?>
 
     <?php // echo $form->field($model, 'utilisateur_id') ?>
+
+    <?php // echo $form->field($model, 'etat') ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>
