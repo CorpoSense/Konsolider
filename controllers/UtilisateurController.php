@@ -65,9 +65,16 @@ class UtilisateurController extends Controller
     public function actionCreate()
     {
         $model = new Utilisateur();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+                
+        if ($model->load(Yii::$app->request->post())) {
+            // set password
+            $model->password = Yii::$app->security->generatePasswordHash($model->password);
+            $model->access_token = Yii::$app->security->generateRandomString();
+            $model->auth_key = Yii::$app->security->generateRandomString();
+            
+            if ($model->save()){
+                return $this->redirect(['view', 'id' => $model->id]);                
+            }
         }
 
         return $this->render('create', [

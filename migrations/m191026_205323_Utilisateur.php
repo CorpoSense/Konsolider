@@ -21,8 +21,7 @@ class m191026_205323_Utilisateur extends Migration
             [
                 'id'=> $this->primaryKey(11),
                 'nom'=> $this->string(255)->notNull(),
-                'prenom'=> $this->string(255)->notNull(),
-                'role'=> $this->string(255)->notNull(),
+                'prenom'=> $this->string(250)->notNull(),
                 'unite_id'=> $this->integer(11)->notNull(),
             ],$tableOptions
         );
