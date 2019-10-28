@@ -3,16 +3,16 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Utilisateur;
-use app\models\UtilisateurSearch;
+use app\models\User;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * UtilisateurController implements the CRUD actions for Utilisateur model.
+ * UserController implements the CRUD actions for User model.
  */
-class UtilisateurController extends Controller
+class UserController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -30,22 +30,22 @@ class UtilisateurController extends Controller
     }
 
     /**
-     * Lists all Utilisateur models.
+     * Lists all User models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new UtilisateurSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = new ActiveDataProvider([
+            'query' => User::find(),
+        ]);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
 
     /**
-     * Displays a single Utilisateur model.
+     * Displays a single User model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -58,16 +58,25 @@ class UtilisateurController extends Controller
     }
 
     /**
-     * Creates a new Utilisateur model.
+     * Creates a new User model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Utilisateur();
+        $model = new User();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+          
+            // set password
+            $model->password = Yii::$app->security->generatePasswordHash($model->password);
+            $model->auth_key= Yii::$app->security->generateRandomString();
+            $model->access_token = Yii::$app->security->generateRandomString();
+          
+          if ($model->save()){
             return $this->redirect(['view', 'id' => $model->id]);
+          }
+
         }
 
         return $this->render('create', [
@@ -76,7 +85,7 @@ class UtilisateurController extends Controller
     }
 
     /**
-     * Updates an existing Utilisateur model.
+     * Updates an existing User model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -96,7 +105,7 @@ class UtilisateurController extends Controller
     }
 
     /**
-     * Deletes an existing Utilisateur model.
+     * Deletes an existing User model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -110,15 +119,15 @@ class UtilisateurController extends Controller
     }
 
     /**
-     * Finds the Utilisateur model based on its primary key value.
+     * Finds the User model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Utilisateur the loaded model
+     * @return User the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Utilisateur::findOne($id)) !== null) {
+        if (($model = User::findOne($id)) !== null) {
             return $model;
         }
 

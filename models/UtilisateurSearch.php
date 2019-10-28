@@ -17,8 +17,8 @@ class UtilisateurSearch extends Utilisateur
     public function rules()
     {
         return [
-            [['id', 'unite_id'], 'integer'],
-            [['nom', 'password', 'role', 'auth_key', 'access_token'], 'safe'],
+            [['id', 'unite_id', 'user_id'], 'integer'],
+            [['nom', 'prenom'], 'safe'],
         ];
     }
 
@@ -60,13 +60,11 @@ class UtilisateurSearch extends Utilisateur
         $query->andFilterWhere([
             'id' => $this->id,
             'unite_id' => $this->unite_id,
+            'user_id' => $this->user_id,
         ]);
 
         $query->andFilterWhere(['like', 'nom', $this->nom])
-            ->andFilterWhere(['like', 'password', $this->password])
-            ->andFilterWhere(['like', 'role', $this->role])
-            ->andFilterWhere(['like', 'auth_key', $this->auth_key])
-            ->andFilterWhere(['like', 'access_token', $this->access_token]);
+            ->andFilterWhere(['like', 'prenom', $this->prenom]);
 
         return $dataProvider;
     }

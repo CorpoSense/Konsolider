@@ -34,7 +34,7 @@ class m191026_205324_Relations extends Migration
             '{{%Canevas}}','id',
             'CASCADE','CASCADE'
          );
-        $this->addForeignKey('fk_Realisation_mesure_id',
+        $this->addForeignKey('fk_Realisation_indicateur_id',
             '{{%Realisation}}','mesure_id',
             '{{%Indicateur}}','id',
             'CASCADE','CASCADE'
@@ -54,6 +54,11 @@ class m191026_205324_Relations extends Migration
             '{{%Unite}}','id',
             'CASCADE','CASCADE'
          );
+        $this->addForeignKey('fk_Utilisateur_user_id',
+            '{{%Utilisateur}}','user_id',
+            '{{%user}}','id',
+            'CASCADE','CASCADE'
+         );        
     }
 
     public function safeDown()
@@ -62,9 +67,11 @@ class m191026_205324_Relations extends Migration
         $this->dropForeignKey('fk_Exercice_rapport_id', '{{%Exercice}}');
         $this->dropForeignKey('fk_Exercice_unite_id', '{{%Exercice}}');
         $this->dropForeignKey('fk_Indicateur_canvevas_id', '{{%Indicateur}}');
-        $this->dropForeignKey('fk_Realisation_mesure_id', '{{%Realisation}}');
+        $this->dropForeignKey('fk_Realisation_indicateur_id', '{{%Realisation}}');
         $this->dropForeignKey('fk_Realisation_exercice_id', '{{%Realisation}}');
         $this->dropForeignKey('fk_Realisation_utilisateur_id', '{{%Realisation}}');
         $this->dropForeignKey('fk_Utilisateur_unite_id', '{{%Utilisateur}}');
+        $this->dropForeignKey('fk_Utilisateur_user_id', '{{%Utilisateur}}');
+        
     }
 }
