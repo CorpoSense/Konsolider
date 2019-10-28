@@ -41,23 +41,16 @@ AppAsset::register($this);
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
             ['label' => 'Accueil', 'url' => ['/site/index']],
-            // ['label' => 'A propos', 'url' => ['/site/about']],
             ['label' => 'Contact', 'url' => ['/site/contact']],
-/*            ['label' => 'Canevas', 'url' => ['/canevas/index']],
-            ['label' => 'Exercice', 'url' => ['/exercice/index']],
-            ['label' => 'Indicateur', 'url' => ['/indicateur/index']],
-            ['label' => 'Rapport', 'url' => ['/rapport/index']],
-            ['label' => 'Unite', 'url' => ['/unite/index']],
-            ['label' => 'Utilisateur', 'url' => ['/utilisateur/index']],*/
             Yii::$app->user->isGuest ? (
                 ['label' => 'A propos', 'url' => ['/site/about']]
             ) : (
                 // if admin
+                '<li><a href="'.Url::to(['unite/index']).'">Unite</a></li>'.
                 '<li><a href="'.Url::to(['canevas/index']).'">Canevas</a></li>'.
-                '<li><a href="'.Url::to(['exercice/index']).'">Exercice</a></li>'.
                 '<li><a href="'.Url::to(['indicateur/index']).'">Indicateur</a></li>'.
                 '<li><a href="'.Url::to(['rapport/index']).'">Rapport</a></li>'.
-                '<li><a href="'.Url::to(['unite/index']).'">Unite</a></li>'.
+                '<li><a href="'.Url::to(['exercice/index']).'">Exercice</a></li>'.
                 '<li><a href="'.Url::to(['utilisateur/index']).'">Utilisateur</a></li>'.
                 // TODO: create other links
                 // if not admin

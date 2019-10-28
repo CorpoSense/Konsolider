@@ -8,10 +8,14 @@ $this->title = 'Bienvenu';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-about">
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1></h1>
 
-    <p>
-        <?= Html::encode($unite->nom ) ?>    </p>
-
+     <?php var_dump($exercices) ?>
+    
+    <?php foreach ($exercices as $k): ?>
+    
+    <?php echo $k->id ?>
+    
+    <?php endforeach; ?>
     
 </div>

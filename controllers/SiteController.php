@@ -10,6 +10,7 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\Unite;
+use app\models\Exercice;
 
 class SiteController extends Controller
 {
@@ -142,13 +143,25 @@ class SiteController extends Controller
     public function actionHello()
     {
       // $unite = Unite::findOne(1);
-      $unite = Unite::find()->one();
+//      $unite = Unite::find()->one();
       /*$unite = new Unite();
       $unite->nom = "ETH";
       $unite->responsable = "Bachir";
       // $unite->created_at = date('Y-m-d');
       // $unite->updated_at = date('Y-m-d');
       $unite->save(false);*/
-      return $this->render('hello',['unite' => $unite]);
+//      return $this->render('hello',['unite' => $unite]);
+        
+      $exercices = Exercice::findAll([]);
+      echo '<pre>';
+      var_dump($exercices);
+      echo '</pre>';
+      die('');
+      return $this->render('hello',[
+          'exercices' => $exercices
+          ]);
+        
     }
+    
+    
 }
