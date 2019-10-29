@@ -24,6 +24,8 @@ class m191028_132504_user extends Migration
                 'password'=> $this->string(255)->notNull(),
                 'auth_key'=> $this->string(255)->notNull(),
                 'access_token'=> $this->string(255)->notNull(),
+                'role'=> $this->integer(1)->notNull()->defaultValue(0),
+                'status'=> $this->integer(1)->notNull()->defaultValue(1),
             ],$tableOptions
         );
 

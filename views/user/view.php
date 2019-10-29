@@ -34,6 +34,8 @@ $this->params['breadcrumbs'][] = $this->title;
 //            'password',
 //            'auth_key',
 //            'access_token',
+            ['attribute' => 'role', 'value' => $model->getRole()],
+            ['attribute' => 'status', 'value' => $model->getStatus()],
         ],
     ]) ?>
 

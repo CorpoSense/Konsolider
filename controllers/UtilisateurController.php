@@ -4,10 +4,13 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Utilisateur;
+use app\models\User;
 use app\models\UtilisateurSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
+use app\components\AccessRule;
 
 /**
  * UtilisateurController implements the CRUD actions for Utilisateur model.
@@ -26,6 +29,42 @@ class UtilisateurController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+            'access' => [
+                'class' => AccessControl::className(),
+                   // We will override the default rule config with the new AccessRule class
+                   'ruleConfig' => [
+                       'class' => AccessRule::className(),
+                   ],
+                'only' => ['index','create', 'update', 'delete'],
+                'rules' => [
+                        [
+                        'actions' => ['index','create'],
+                        'allow' => true,
+                        // Allow users and admins to create
+                            'roles' => [
+                                User::ROLE_USER,
+                                User::ROLE_ADMIN
+                            ],
+                        ],
+                       [
+                           'actions' => ['update'],
+                           'allow' => true,
+                           // Allow moderators and admins to update
+                           'roles' => [
+                               User::ROLE_ADMIN
+                           ],
+                       ],
+                       [
+                           'actions' => ['delete'],
+                           'allow' => true,
+                           // Allow admins to delete
+                           'roles' => [
+                               User::ROLE_ADMIN
+                           ],
+                       ],                    
+
+                ]
+            ]
         ];
     }
 

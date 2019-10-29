@@ -14,6 +14,11 @@ $config = [
         '@npm'   => '@vendor/npm-asset',
     ],
     'components' => [
+        // using authManager Component
+//        'authManager' => [
+//            'class' => 'yii\rbac\PhpManager',
+//            'defaultRoles' => ['admin', 'user'],
+//        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'ffidsfdsjfodsfidsjifdsjcijsd',

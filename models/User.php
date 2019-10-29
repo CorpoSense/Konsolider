@@ -11,9 +11,16 @@ use \yii\db\ActiveRecord;
  * @property string $password
  * @property string $auth_key
  * @property string $access_token
+ * @property int $role
+ * @property int $status
  */
 class User extends ActiveRecord implements \yii\web\IdentityInterface
 {
+    const ROLE_USER = 0;
+    const ROLE_ADMIN = 1;
+    
+    const STATUS_DESACTIVE = 0;
+    const STATUS_ACTIVE = 1;
 
     /**
      * {@inheritdoc}
@@ -29,9 +36,10 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
     public function rules()
     {
         return [
-            [['username', 'password', 'auth_key', 'access_token'], 'required'],
+            [['username', 'password', 'auth_key', 'access_token', 'role', 'status'], 'required'],
             [['username'], 'string', 'max' => 80],
-            [['password', 'auth_key', 'access_token'], 'string', 'max' => 250],
+            [['role', 'status'], 'integer'],
+            [['password', 'auth_key', 'access_token'], 'string', 'max' => 255],
 
         ];
     }
@@ -46,15 +54,10 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
             'username' => 'Nom Utilisateur',
             'password' => 'Mot de passe',
             'role' => 'Role',
+            'status' => 'Statut',
             'auth_key' => 'Auth Key',
             'access_token' => 'Access Token',
         ];
-    }
-
-    public function isAdmin()
-    {
-      // return Yii::$app->user->id == 1;
-      return $this->id === 1;
     }
 
     /**
@@ -128,4 +131,19 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
     {
         return \Yii::$app->security->validatePassword($password, $this->password);
     }
+    
+    public function isAdmin()
+    {
+//      return (!Yii::$app->user->isGuest) && ($this->role === self::ROLE_ADMIN);
+      return $this->role === self::ROLE_ADMIN;
+    }
+    
+    public function getStatus() {
+        return $this->status === self::STATUS_ACTIVE?'Activé':'Désactivé';
+    }
+    
+    public function getRole() {
+        return $this->role === self::ROLE_USER?'Utilisateur':'Administrateur';
+    }
+    
 }

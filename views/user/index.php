@@ -28,6 +28,8 @@ $this->params['breadcrumbs'][] = $this->title;
 //            'password',
 //            'auth_key',
 //            'access_token',
+            ['attribute' => 'role', 'value' => function($model){ return $model->getRole(); }],
+            ['attribute' => 'status', 'value' => function($model){ return $model->getStatus(); }],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

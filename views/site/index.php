@@ -7,7 +7,9 @@ use yii\helpers\Html;
 
 $this->title = Yii::$app->name.' v1.0';
 ?>
+
 <div class="site-index">
+            
 
     <!-- <div class="jumbotron">
         <h1><?= Yii::$app->name ?></h1>
@@ -15,14 +17,19 @@ $this->title = Yii::$app->name.' v1.0';
     </div> -->
 
     <div class="container">
+        <div class="row">
+            <h1><?php //echo Yii::$app->user->identity->getRole() ?></h1>
+            <p><?php //echo (!Yii::$app->user->isGuest && Yii::$app->user->identity->isAdmin())?'yes':'no' ?></p>
+        </div>
       <div class="row">
         <div class="col-md-6">
 
-          <h2>Connexion</h2>
 
           <?php
           if (Yii::$app->user->isGuest){
 
+            echo '<h2>Connexion</h2>';
+            
             $form = ActiveForm::begin([ 'id' => 'login-form' ]);
             echo $form->field($model, 'username')->textInput(['autofocus' => true]);
             echo $form->field($model, 'password')->passwordInput();
@@ -39,6 +46,20 @@ $this->title = Yii::$app->name.' v1.0';
               // echo 'a Guest!';
             }
             ?>
+
+            
+            <div class="row">
+                
+                
+                <div class="col-md-6">
+                    
+                    <div class="page-header">
+                        <h4>
+                            Résultat de l'exercice en cours
+                        </h4>
+
+                    </div>
+
             <table id="listUnit" class="table table-hover">
                 <thead>
                 <tr>
@@ -84,17 +105,19 @@ $this->title = Yii::$app->name.' v1.0';
 
                 </tbody>
             </table>
-
+                    
+                    </div><!-- .col-md-6 -->
+                </div><!-- .row -->
+            
             <?php
-
             // otherwise
           }
           ?>
 
-        </div>
+        </div><!-- .col-md-6 -->
 
-      </div>
-    </div>
+      </div><!-- .row -->
+    </div><!-- .container -->
 
     <div class="body-content">
 
