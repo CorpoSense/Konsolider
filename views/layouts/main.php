@@ -23,6 +23,15 @@ AppAsset::register($this);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?php $this->registerCsrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
+    <style>
+        input[type=checkbox] {
+            margin: 5px;
+            cursor: pointer;
+        }
+        td.rate-mesure-input {
+            text-align: center;
+        }
+    </style>    
     <?php $this->head() ?>
 </head>
 <body>
@@ -46,15 +55,18 @@ AppAsset::register($this);
                 ['label' => 'A propos', 'url' => ['/site/about']]
             ) : (
                 // if admin
+                    (Yii::$app->user->identity->isAdmin()?(
                 '<li><a href="'.Url::to(['unite/index']).'">Unite</a></li>'.
                 '<li><a href="'.Url::to(['canevas/index']).'">Canevas</a></li>'.
                 '<li><a href="'.Url::to(['indicateur/index']).'">Indicateur</a></li>'.
                 '<li><a href="'.Url::to(['rapport/index']).'">Rapport</a></li>'.
                 '<li><a href="'.Url::to(['exercice/index']).'">Exercice</a></li>'.
                 '<li><a href="'.Url::to(['realisation/index']).'">Realisations</a></li>'.
-                '<li><a href="'.Url::to(['utilisateur/index']).'">Utilisateur</a></li>'.
-                // TODO: create other links
-                // if not admin
+                '<li><a href="'.Url::to(['utilisateur/index']).'">Utilisateur</a></li>'
+                            ):
+                        // if not admin
+                        '').
+                            
                 '<li>'
                 . Html::beginForm(['/site/logout'], 'post')
                 . Html::submitButton(
@@ -87,6 +99,7 @@ AppAsset::register($this);
 </footer>
 
 <?php $this->endBody() ?>
+    
 </body>
 </html>
 <?php $this->endPage() ?>

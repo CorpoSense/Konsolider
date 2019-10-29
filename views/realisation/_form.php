@@ -1,7 +1,12 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
+
+use app\models\Utilisateur;
+use app\models\Indicateur;
+use app\models\Exercice;
 
 use kartik\select2\Select2;
 
@@ -18,11 +23,24 @@ use kartik\select2\Select2;
 
     <?= $form->field($model, 'realise')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'indicateur_id')->textInput() ?>
+    <?php //echo $form->field($model, 'indicateur_id')->textInput() ?>
+    <?= $form->field($model, 'indicateur_id')->widget(Select2::class, [
+        'data' => ArrayHelper::map(Indicateur::find()->all(), 'id', 'nom')
+    ]);
+    ?>
 
-    <?= $form->field($model, 'exercice_id')->textInput() ?>
+    <?php //echo $form->field($model, 'exercice_id')->textInput() ?>
+    <?= $form->field($model, 'exercice_id')->widget(Select2::class, [
+        'data' => ArrayHelper::map(Exercice::find()->all(), 'id', 'id')
+    ]);
+    ?>
 
-    <?= $form->field($model, 'utilisateur_id')->textInput() ?>
+    <?php //echo $form->field($model, 'utilisateur_id')->textInput() ?>
+    
+    <?= $form->field($model, 'utilisateur_id')->widget(Select2::class, [
+        'data' => ArrayHelper::map(Utilisateur::find()->all(), 'id', 'nom')
+    ]);
+    ?>
 
     <?php //echo $form->field($model, 'etat')->textInput() ?>
 

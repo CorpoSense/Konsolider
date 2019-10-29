@@ -54,7 +54,7 @@ class Indicateur extends \yii\db\ActiveRecord
             'type' => 'Type',
             'unite_mesure' => 'Unite Mesure',
             'requis' => 'Requis',
-            'canvevas_id' => 'Canvevas ID',
+            'canvevas_id' => 'Canvevas',
         ];
     }
 

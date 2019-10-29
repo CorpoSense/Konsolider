@@ -29,9 +29,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'prevue',
             'realise',
-            'indicateur_id',
-            'exercice_id',
-            //'utilisateur_id',
+            ['attribute' => 'indicateur_id', 'value' => function($model){ return $model->indicateur->nom; }],
+            ['attribute' => 'exercice_id', 'label' => 'Rapport', 'value' => function($model){ return $model->exercice->rapport->nom; }],
+            ['attribute' => 'utilisateur_id', 'value' => function($model){ return $model->utilisateur->nom; }],
             //'etat',
 
             ['class' => 'yii\grid\ActionColumn'],

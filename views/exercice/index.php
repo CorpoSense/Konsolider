@@ -27,9 +27,9 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'canevas_id',
-            'rapport_id',
-            'unite_id',
+            ['attribute' => 'canevas_id', 'value' => function($model){ return $model->canevas->nom; } ],
+            ['attribute' => 'rapport_id', 'value' => function($model){ return $model->rapport->nom; } ],
+            ['attribute' => 'unite_id', 'value' => function($model){ return $model->unite->nom; } ],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

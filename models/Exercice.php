@@ -48,9 +48,9 @@ class Exercice extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'canevas_id' => 'Canevas ID',
-            'rapport_id' => 'Rapport ID',
-            'unite_id' => 'Unite ID',
+            'canevas_id' => 'Canevas',
+            'rapport_id' => 'Rapport',
+            'unite_id' => 'Unite',
         ];
     }
 

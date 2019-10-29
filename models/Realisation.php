@@ -21,6 +21,10 @@ use Yii;
  */
 class Realisation extends \yii\db\ActiveRecord
 {
+    
+    const ETAT_NONVALID = 0;
+    const ETAT_VALID = 1;
+    
     /**
      * {@inheritdoc}
      */
@@ -53,9 +57,9 @@ class Realisation extends \yii\db\ActiveRecord
             'id' => 'ID',
             'prevue' => 'Prevue',
             'realise' => 'Realise',
-            'indicateur_id' => 'Indicateur ID',
-            'exercice_id' => 'Exercice ID',
-            'utilisateur_id' => 'Utilisateur ID',
+            'indicateur_id' => 'Indicateur',
+            'exercice_id' => 'Exercice',
+            'utilisateur_id' => 'Utilisateur',
             'etat' => 'Etat',
         ];
     }
@@ -82,5 +86,9 @@ class Realisation extends \yii\db\ActiveRecord
     public function getUtilisateur()
     {
         return $this->hasOne(Utilisateur::className(), ['id' => 'utilisateur_id']);
+    }
+    
+    public function getEtat() {
+        return $this->etat == self::ETAT_VALID?'Validé': 'Non Validé';
     }
 }
