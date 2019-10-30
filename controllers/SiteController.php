@@ -12,6 +12,7 @@ use app\models\ContactForm;
 use app\models\Unite;
 use app\models\Exercice;
 use app\models\Indicateur;
+use app\models\Utilisateur;
 
 class SiteController extends Controller
 {
@@ -74,21 +75,23 @@ class SiteController extends Controller
         }
 
 //        $model->password = '';
-        
+
         $exercices = [];
         $indicateurs = [];
         if (isset(Yii::$app->user->identity)){
             if (Yii::$app->user->identity->isAdmin()){
                 $exercices = Exercice::find()->orderBy('unite_id')->all();
             } else {
-                $exercices = [Exercice::find()->where(['unite_id' => 1])->one()];
+
+                $user = Utilisateur::find()->where(['user_id'=> Yii::$app->user->id])->one();
+                $exercices = [Exercice::find()->where(['unite_id' => $user->unite->id])->one()];
                 if (count($exercices) > 0){
                     $canevas = $exercices[0]->canevas;
                     $indicateurs = $canevas->getIndicateurs()->all();// Indicateur::findByCanevasId( $canevas->id )->all();
                 }
             }
         }
-        return $this->render('index', [ 
+        return $this->render('index', [
             'model' => $model,
             'exercices' => $exercices,
             'indicateurs' => $indicateurs
@@ -156,6 +159,6 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
-    
-    
+
+
 }

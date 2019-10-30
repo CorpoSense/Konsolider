@@ -34,8 +34,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'description:ntext',
             'type',
             'unite_mesure',
-            'requis',
-            ['attribute' =>'canvevas_id', 'value' => function($model) {return $model->getCanvevas()->one()->nom; }],
+            ['attribute' => 'requis', 'value' => function($model){ return $model->getRequis(); } ],
+            ['attribute' =>'canvevas_id', 'value' => function($model) {return $model->canvevas->nom; }],
         ],
     ]) ?>
 

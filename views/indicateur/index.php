@@ -24,15 +24,17 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            // ['class' => 'yii\grid\SerialColumn'],
 
             'id',
             'nom',
             'description:ntext',
             'type',
             'unite_mesure',
-            //'requis',
-            //'canvevas_id',
+            ['attribute' => 'requis', 'value' => function($model){ return $model->getRequis(); } ],
+            ['attribute' => 'canvevas_id', 'value' => function($model){ return $model->canvevas->nom; } ],
+
+
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

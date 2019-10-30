@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            // ['class' => 'yii\grid\SerialColumn'],
 
             'id',
             ['attribute' => 'canevas_id', 'value' => function($model){ return $model->canevas->nom; } ],

@@ -4,6 +4,7 @@
             <h4>
                 Exercice en cours: <?= isset($exercice)?(Yii::$app->formatter->format($exercice->rapport->debut, ['date', 'format' => 'Y'])):'<aucun>' ?>
             </h4>
+            <h4>Unite: <?= $exercice->unite->nom ?></h4>
         </div>
 
         <table class="table table-responsive">
@@ -31,7 +32,7 @@
             </tbody>
         </table>
 
-        
+
     </div>
 </div>
 

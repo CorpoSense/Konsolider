@@ -73,4 +73,9 @@ class Indicateur extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Realisation::className(), ['mesure_id' => 'id']);
     }
+
+    public function getRequis()
+    {
+      return $this->requis === 1? 'Oui':'Non';
+    }
 }

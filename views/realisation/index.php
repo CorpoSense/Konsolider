@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            // ['class' => 'yii\grid\SerialColumn'],
 
             'id',
             'prevue',
@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ['attribute' => 'indicateur_id', 'value' => function($model){ return $model->indicateur->nom; }],
             ['attribute' => 'exercice_id', 'label' => 'Rapport', 'value' => function($model){ return $model->exercice->rapport->nom; }],
             ['attribute' => 'utilisateur_id', 'value' => function($model){ return $model->utilisateur->nom; }],
-            //'etat',
+            ['attribute' => 'etat', 'value' => function($model){ return $model->getEtat(); }],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

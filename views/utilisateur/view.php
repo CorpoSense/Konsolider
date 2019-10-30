@@ -32,8 +32,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'nom',
             'prenom',
-            'unite_id',
-            'user_id',
+            ['attribute' => 'unite_id', 'value' => function ($model) { return $model->unite->nom; }],
+            ['attribute' => 'user_id', 'label' => 'Access', 'value' => function ($model) { return $model->user->username; }],
         ],
     ]) ?>
 
