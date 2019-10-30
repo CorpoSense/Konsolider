@@ -31,7 +31,7 @@ AppAsset::register($this);
         td.rate-mesure-input {
             text-align: center;
         }
-    </style>    
+    </style>
     <?php $this->head() ?>
 </head>
 <body>
@@ -66,7 +66,7 @@ AppAsset::register($this);
                             ):
                         // if not admin
                         '').
-                            
+
                 '<li>'
                 . Html::beginForm(['/site/logout'], 'post')
                 . Html::submitButton(
@@ -83,6 +83,10 @@ AppAsset::register($this);
 
     <div class="container">
         <?= Breadcrumbs::widget([
+            'homeLink' => [
+              'label' => Yii::t('app', 'Accueil'),
+              'url' => Yii::$app->homeUrl //Url::to(['site/index'])
+            ],
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
         <?= Alert::widget() ?>
@@ -99,7 +103,7 @@ AppAsset::register($this);
 </footer>
 
 <?php $this->endBody() ?>
-    
+
 </body>
 </html>
 <?php $this->endPage() ?>
