@@ -14,49 +14,33 @@
                     <th>Indicateur</th>
                     <th>Prévu</th>
                     <th>Réalisé</th>
-                    <th></th>
-                    <th><input type="checkbox" /></th>
+                    <th>Taux</th>
+                    <th><input type="checkbox" name="check-all" id="check-all" /></th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td><?= $exercice->rapport->nom ?></td>
                     <?php foreach ($indicateurs as $mesure) : ?>
-                    <td><?= $mesure->nom ?></td>
+                    <td><?= $mesure->nom ?>
+                      <div class="help-block"><?= $mesure->description ?>
+                          <input type="hidden" name="mesure-id-<?= $mesure->id ?>" id="mesure-id-<?= $mesure->id ?>" value="<?= $mesure->id ?>" />
+                      </div>
+
+                    </td>
                     <?php endforeach; ?>
-                    <td><input class="form-control form-inline mesure-input" type="number" placeholder="Prévision" /></td>
-                    <td><input class="form-control form-inline mesure-input" type="number" placeholder="Réalisation" /></td>
-                    <td><input class="btn btn-primary btn-sm" type="button" value="Valider" /></td>
-                    <td><input type="checkbox" /></td>
+                    <td><input class="form-control mesure-input" data-value="<?= $mesure->id ?>" type="number" name="prevue-<?= $mesure->id ?>" id="prevue-<?= $mesure->id ?>"placeholder="Prévision" /></td>
+                    <td><input class="form-control mesure-input" data-value="<?= $mesure->id ?>" type="number" name="realise-<?= $mesure->id ?>" id="realise-<?= $mesure->id ?>" placeholder="Réalisation" /></td>
+                    <td class="rate-mesure-input"><span id="rate-mesure-input-<?= $mesure->id ?>"></span></td>
+                    <td><input type="checkbox" class="check-mesure" name="check-mesure-<?= $mesure->id ?>" id="check-mesure-<?= $mesure->id ?>" /></td>
                 </tr>
             </tbody>
         </table>
+        <div class="pull-right">
+          <input class="btn btn-primary btn-sm" type="button" value="Valider" />
+        </div>
 
 
     </div>
 </div>
-
-<?php $this->beginBlock('footer') ?>
-<script>
-    $('#check-all').change(function(){
-        $('.check-mesure').prop('checked', $(this).prop('checked'));
-    });
-    $('.mesure-input').change(function(){
-        updateRate($(this));
-    });
-    function updateRate(el){
-    var value = $(el).val();
-    var id = $(el).attr('data-value');
-        var result = '-';
-        try {
-            var forecast = parseFloat( $('#prevue-'+id).val() );
-            var real =  parseFloat( $('#realise-'+id).val() );
-            result = parseFloat( (real / forecast)*100 ).toFixed(1);
-        } catch (e){
-            result = '-';
-        }
-        $('#rate-mesure-input-'+id).text( isNaN(result)?'-':(result + '%') );
-
-    }
-</script>
-<?php $this->endBlock('footer') ?>
+<?php $this->registerJsFile('@web/js/rates.js', ['depends' => 'yii\web\JqueryAsset']) ?>

@@ -9,7 +9,7 @@ $this->title = Yii::$app->name.' v1.0';
 ?>
 
 <div class="site-index">
-            
+
 
     <!-- <div class="jumbotron">
         <h1><?= Yii::$app->name ?></h1>
@@ -29,7 +29,7 @@ $this->title = Yii::$app->name.' v1.0';
           if (Yii::$app->user->isGuest){
 
             echo '<h2>Connexion</h2>';
-            
+
             $form = ActiveForm::begin([ 'id' => 'login-form' ]);
             echo $form->field($model, 'username')->textInput(['autofocus' => true]);
             echo $form->field($model, 'password')->passwordInput();
@@ -50,7 +50,7 @@ $this->title = Yii::$app->name.' v1.0';
             ?>
 
 
-            
+
             <?php
             // otherwise
           }
