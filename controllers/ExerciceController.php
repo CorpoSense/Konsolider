@@ -66,12 +66,23 @@ class ExerciceController extends Controller
     {
         $model = new Exercice();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+
+          try {
+            if ($model->save()){
+              return $this->redirect(['view', 'id' => $model->id]);
+            }
+
+          } catch (\Exception $e) {
+            if ($e->getCode()===23000){ // duplicate key
+                \Yii::$app->session->setFlash('error', 'Erreur: Cet Exercice existe déjà');
+            }
+          }
         }
 
         return $this->render('create', [
             'model' => $model,
+            //'errors' => $model->getErrors()
         ]);
     }
 

@@ -74,8 +74,6 @@ class SiteController extends Controller
             return $this->goBack();
         }
 
-//        $model->password = '';
-
         $exercices = [];
         $indicateurs = [];
         if (isset(Yii::$app->user->identity)){

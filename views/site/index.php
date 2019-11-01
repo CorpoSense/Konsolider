@@ -40,6 +40,8 @@ $this->title = Yii::$app->name.' v1.0';
           } else {
             // user role is 'admin'
             if (Yii::$app->user->identity->isAdmin()){
+              // var_dump($exercices);
+              // die('');
               // echo 'yes admin';
                 echo $this->render('_admin', ['exercices' => $exercices]);
 
@@ -49,10 +51,8 @@ $this->title = Yii::$app->name.' v1.0';
             }
             ?>
 
-
-
             <?php
-            // otherwise
+            // otherwise (other or unknown roles)
           }
           ?>
 
