@@ -10,12 +10,6 @@ $this->title = Yii::$app->name.' v1.0';
 
 <div class="site-index">
 
-
-    <!-- <div class="jumbotron">
-        <h1><?= Yii::$app->name ?></h1>
-        <p class="lead">Veuillez vous connecter afin d'accéder à l'application.</p>
-    </div> -->
-
     <div class="container">
         <div class="row">
             <h1><?php //echo Yii::$app->user->identity->getRole() ?></h1>
@@ -24,12 +18,10 @@ $this->title = Yii::$app->name.' v1.0';
       <div class="row">
         <div class="col-md-12">
 
-
           <?php
           if (Yii::$app->user->isGuest){
 
             echo '<h2>Connexion</h2>';
-
             $form = ActiveForm::begin([ 'id' => 'login-form' ]);
             echo $form->field($model, 'username')->textInput(['autofocus' => true]);
             echo $form->field($model, 'password')->passwordInput();
@@ -40,9 +32,6 @@ $this->title = Yii::$app->name.' v1.0';
           } else {
             // user role is 'admin'
             if (Yii::$app->user->identity->isAdmin()){
-              // var_dump($exercices);
-              // die('');
-              // echo 'yes admin';
                 echo $this->render('_admin', ['exercices' => $exercices]);
 
             } else {
@@ -50,7 +39,6 @@ $this->title = Yii::$app->name.' v1.0';
                 echo $this->render('_user', ['exercices' => $exercices/*[0], 'indicateurs' => $indicateurs*/]);
             }
             ?>
-
             <?php
             // otherwise (other or unknown roles)
           }

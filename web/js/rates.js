@@ -1,8 +1,8 @@
 $(function () {
 
-
-  $('#check-all').change(function(){
-      $('.check-mesure').prop('checked', $(this).prop('checked'));
+  $('.check-all').change(function(){
+      var canevasId = $(this).attr('data-value');
+      $('.check-mesure-'+canevasId).prop('checked', $(this).prop('checked'));
   });
 
   $('.mesure-input').change(function(){
@@ -10,8 +10,6 @@ $(function () {
   });
 
   function updateRate(el){
-  var value = $(el).val();
-
   var id = $(el).attr('data-value');
       var result = '-';
       try {
