@@ -153,5 +153,9 @@ class SiteController extends Controller
         return $this->render('about');
     }
     
+    public function actionValidate($canevas = '') {
+        return 'done';
+//        $this->render('ok');
+    }
 
 }

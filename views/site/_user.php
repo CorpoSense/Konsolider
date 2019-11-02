@@ -28,7 +28,7 @@
                 <?php endforeach; ?>
                 
                 <?= \yii\bootstrap\Tabs::widget(['items' => $items]) ?>                
-
+                
             </div>
 
 
