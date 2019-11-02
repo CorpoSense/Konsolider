@@ -1,8 +1,14 @@
+<?php
+
+use yii\helpers\Url;
+
+?>
+
 <div class="row">
     <div class="col-md-12">
         <div class="page-header">
             <h4>
-                Exercice en cours: <?= count($exercices)>0?(Yii::$app->formatter->format($exercices[0]->rapport->debut, ['date', 'format' => 'Y'])):'<aucun>' ?>
+                Exercice en cours: <?= count($exercices)>0?(Yii::$app->formatter->format($exercices[0]->rapport->debut, ['date', 'format' => 'yyyy'])):'<aucun>' ?>
             </h4>
         </div>
     <table id="listUnit" class="table table-hover">
@@ -35,7 +41,7 @@
 
                 </td>
                 <td>
-                    <button class="btn btn-info btn-sm"> <span class="glyphicon glyphicon-pencil"></span></button>
+                    <a href="<?= Url::to(['exercice/view', 'id' => $exercice->id ]) ?>" class="btn btn-info btn-sm"> <span class="glyphicon glyphicon-pencil"></span> </a>
                 </td>
             </tr>
 

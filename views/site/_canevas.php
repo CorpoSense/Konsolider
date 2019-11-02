@@ -11,12 +11,12 @@
     <tbody>
         <?php foreach ($canevas->indicateurs as $mesure): ?>
         <tr>
-            <td><?= $mesure->nom ?>
+            <td><?= $mesure->nom.($mesure->requis?'*':'') ?>
               <div class="help-block"><?= $mesure->description ?>
               </div>
             </td>
-            <td><input class="form-control mesure-input" data-value="<?= $mesure->id ?>" type="number" name="prevue-<?= $mesure->id ?>" id="prevue-<?= $mesure->id ?>"placeholder="Prévision" /></td>
-            <td><input class="form-control mesure-input" data-value="<?= $mesure->id ?>" type="number" name="realise-<?= $mesure->id ?>" id="realise-<?= $mesure->id ?>" placeholder="Réalisation" /></td>
+            <td><input class="form-control mesure-input" data-value="<?= $mesure->id ?>" type="number" <?= $mesure->requis?'required="required"':'' ?> name="prevue-<?= $mesure->id ?>" id="prevue-<?= $mesure->id ?>"placeholder="Prévision" /></td>
+            <td><input class="form-control mesure-input" data-value="<?= $mesure->id ?>" type="number" <?= $mesure->requis?'required="required"':'' ?> name="realise-<?= $mesure->id ?>" id="realise-<?= $mesure->id ?>" placeholder="Réalisation" /></td>
             <td class="rate-mesure-input"><span id="rate-mesure-input-<?= $mesure->id ?>">%</span></td>
             <td><input type="checkbox" class="check-mesure-<?= $canevas->id ?>" name="check-mesure-<?= $mesure->id ?>" id="check-mesure-<?= $mesure->id ?>" /></td>
         </tr>
@@ -25,5 +25,5 @@
 </table>
 
 <div class="pull-right">
-  <input class="btn btn-primary btn-sm" type="button" value="Valider" />
+    <input class="btn btn-primary btn-sm" type="button" value="Valider" name="validate-<?= $canevas->id ?>" />
 </div>

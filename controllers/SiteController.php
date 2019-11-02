@@ -75,7 +75,6 @@ class SiteController extends Controller
         }
 
         $exercices = [];
-//        $indicateurs = [];
         if (isset(Yii::$app->user->identity)){
             if (Yii::$app->user->identity->isAdmin()){
                 // role "admin"
@@ -84,18 +83,11 @@ class SiteController extends Controller
                 // role "user"
                 $user = Utilisateur::find()->where(['user_id'=> Yii::$app->user->id])->one();
                 $exercices = Exercice::find()->where(['unite_id' => $user->unite->id])->all();
-//                var_dump($exercices[0]->canevas);
-//                die('');
-                if (count($exercices) > 0){
-//                    $canevas = $exercices[0]->canevas;
-//                    $indicateurs = $canevas->getIndicateurs()->all();// Indicateur::findByCanevasId( $canevas->id )->all();
-                }
             }
         }
         return $this->render('index', [
             'model' => $model,
             'exercices' => $exercices,
-//            'indicateurs' => $indicateurs
         ]);
     }
 
@@ -160,6 +152,6 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
-
+    
 
 }
