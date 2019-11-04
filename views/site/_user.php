@@ -23,7 +23,7 @@
                 <?php foreach ($exercices as $exercice): ?>
                     <?php array_push($items, [
                         'label' => $exercice->canevas->nom.': '.$exercice->rapport->nom/*.' ('.Yii::$app->formatter->format($exercice->rapport->fin, ['date', 'format' => 'dd-M-yyyy']).')'*/, 
-                        'content' => $this->render('_canevas', ['canevas' => $exercice->canevas])
+                        'content' => $this->render('_canevas', ['exercice' => $exercice])
                         ]); ?>
                 <?php endforeach; ?>
                 
@@ -36,4 +36,4 @@
 
     </div>
 </div>
-<?php $this->registerJsFile('@web/js/rates.js', ['depends' => 'yii\web\JqueryAsset']) ?>
+<?php $this->registerJsFile('@web/js/userpage.js', ['depends' => 'yii\web\JqueryAsset']) ?>

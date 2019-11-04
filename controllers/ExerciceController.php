@@ -75,7 +75,7 @@ class ExerciceController extends Controller
 
           } catch (\Exception $e) {
             if ($e->getCode()===23000){ // duplicate key
-                \Yii::$app->session->setFlash('error', 'Erreur: Cet Exercice existe déjà');
+                \Yii::$app->session->setFlash('warning', 'Erreur: Cet Exercice existe déjà');
             } else {
                 \Yii::$app->session->setFlash('error', 'Erreur: '.$e->getMessage());
             }
@@ -120,10 +120,10 @@ class ExerciceController extends Controller
         try {
             $this->findModel($id)->delete();
         } catch (\Exception $e) {
-            if ($e->getCode()===23000){ // duplicate key
+            if ($e->getCode()===23000){ // constraints key violation
                 \Yii::$app->session->setFlash('warning', 'Impossible de supprimer les données de cet exercice, les réalisations ont été validées.');
             } else {
-                \Yii::$app->session->setFlash('warning', 'Erreur: '.$e->getMessage());
+                \Yii::$app->session->setFlash('error', 'Erreur: '.$e->getMessage());
             }
         }
 

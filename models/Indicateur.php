@@ -78,4 +78,11 @@ class Indicateur extends \yii\db\ActiveRecord
     {
       return $this->requis === 1? 'Oui':'Non';
     }
+    
+    public function getRequisValues() {
+        return [
+            0 => 'Non',
+            1 => 'Oui'
+        ];
+    }
 }

@@ -152,10 +152,60 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
+        
+    public function actionValidate() {
+        $user = Utilisateur::find()->where( ['user_id' => Yii::$app->user->identity->id] )->one();        
+        $params = Yii::$app->request->bodyParams;
+//        $result = '';
+        foreach ($params as $k => $v){
+            
+            $realisation = new \app\models\Realisation();
+            
+            if (strstr($k, 'exercice-id')){
+                $realisation->exercice_id = $v;
+                
+            } else if (strstr($k, 'mesure-id-')){              
+                $realisation->indicateur_id = $v;
+                
+            } else if (strstr($k, 'realise-')) {
+                $realisation->realise = $v;
+                
+            } else if (strstr($k, 'prevue-')){
+                $realisation->prevue = $v;
+            }
+            $realisation->utilisateur_id = $user->id;
+            $realisation->etat = \app\models\Realisation::ETAT_VALID;
+            
+//            if ($realisation->save()){
+//                $result .= 'id:'+$realisation->id.' saved.';
+//            } else {
+//                $result .= implode('-', $realisation->getErrorSummary(false));
+//            }
+        }
+
+        return $this->saveRealisation(1, 1, 80, 100, $user->id);
+    }
     
-    public function actionValidate($canevas = '') {
-        return 'done';
-//        $this->render('ok');
+    public function actionLog() {
+        $this->render('@app/views/login/Log');
     }
 
+    private function saveRealisation($exercice_id, $indicateur_id, $realise, $prevue, $utilisateur_id) {
+        $realisation = new \app\models\Realisation();
+        $realisation->exercice_id = $exercice_id;
+        $realisation->indicateur_id = $indicateur_id;
+        $realisation->realise = $realise;
+        $realisation->prevue = $prevue;
+        $realisation->utilisateur_id = $utilisateur_id;
+        $realisation->etat = \app\models\Realisation::ETAT_VALID;
+//        $result = '';
+//        if ($realisation->save()){
+//            $result .= 'id:'+$realisation->id.',';
+//        } else {
+//            $result .= implode('-', $realisation->getErrorSummary(true));
+//        }
+        return $realisation->save();
+    }
+
+    
 }

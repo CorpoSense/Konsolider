@@ -89,7 +89,7 @@ AppAsset::register($this);
             ],
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
-        <?= Alert::widget() ?>        
+        <?= Alert::widget() ?>
         <?= $content ?>
     </div>
 </div>
@@ -98,7 +98,7 @@ AppAsset::register($this);
     <div class="container">
         <p class="pull-left"><?= Yii::$app->params['copyright'] ?> &copy; <?= date('Y') ?></p>
 
-        <p class="pull-right"><?= Yii::powered() ?></p>
+        <p class="pull-right"></p>
     </div>
 </footer>
 

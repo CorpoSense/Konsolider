@@ -26,10 +26,7 @@ use kartik\select2\Select2;
     <?= $form->field($model, 'unite_mesure')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'requis')->widget(Select2::class, [
-        'data' => [
-            0 => 'Non',
-            1 => 'Oui'
-        ]
+        'data' => $model->getRequisValues()
     ]) ?>
 
     <?= $form->field($model, 'canvevas_id')->widget(Select2::class, [
