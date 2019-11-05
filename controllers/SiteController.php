@@ -11,14 +11,13 @@ use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\Unite;
 use app\models\Exercice;
+use app\models\Realisation;
 use app\models\Indicateur;
 use app\models\Utilisateur;
 
 class SiteController extends Controller
 {
-    /**
-     * {@inheritdoc}
-     */
+
     public function behaviors()
     {
         return [
@@ -42,9 +41,6 @@ class SiteController extends Controller
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function actions()
     {
         return [
@@ -58,11 +54,6 @@ class SiteController extends Controller
         ];
     }
 
-    /**
-     * Displays homepage.
-     *
-     * @return string
-     */
     public function actionIndex()
     {
         // if (Yii::$app->user->isGuest) {
@@ -81,8 +72,29 @@ class SiteController extends Controller
                 $exercices = Exercice::find()->orderBy('unite_id')->all();
             } else {
                 // role "user"
-                $user = Utilisateur::find()->where(['user_id'=> Yii::$app->user->id])->one();
+                $user = Utilisateur::getConnectedUser();
                 $exercices = Exercice::find()->where(['unite_id' => $user->unite->id])->all();
+                $realisations = [];
+                if (count($exercices) > 0){                            
+                    foreach ($exercices as $exercice) {
+                        // TODO: add only the realisations needed in case when only some of them are added
+                        // for each $exercice check if a realisation hasn't been created yet
+                        $realisations = Realisation::find()->where(['exercice_id' => $exercice->id])->all();
+                        if (empty($realisations)){
+                            // if so, create one
+                            $indicateurs = $exercice->canevas->indicateurs;
+                            foreach ($indicateurs as $indicateur) {
+                                $savedRealisation = $this->saveRealisation($exercice->id, $indicateur->id, 0.0, 0.0, $user->id, Realisation::ETAT_NONVALID);
+                                array_push($realisations, $savedRealisation);
+                            } //foreach
+                        } //if
+                    } //foreach
+                } //if
+                return $this->render('index', [
+                    'model' => $model,
+                    'realisations' => $realisations
+                ]);
+                
             }
         }
         return $this->render('index', [
@@ -91,11 +103,6 @@ class SiteController extends Controller
         ]);
     }
 
-    /**
-     * Login action.
-     *
-     * @return Response|string
-     */
     public function actionLogin()
     {
         if (!Yii::$app->user->isGuest) {
@@ -113,11 +120,6 @@ class SiteController extends Controller
         ]);
     }
 
-    /**
-     * Logout action.
-     *
-     * @return Response
-     */
     public function actionLogout()
     {
         Yii::$app->user->logout();
@@ -125,11 +127,6 @@ class SiteController extends Controller
         return $this->goHome();
     }
 
-    /**
-     * Displays contact page.
-     *
-     * @return Response|string
-     */
     public function actionContact()
     {
         $model = new ContactForm();
@@ -143,18 +140,13 @@ class SiteController extends Controller
         ]);
     }
 
-    /**
-     * Displays about page.
-     *
-     * @return string
-     */
     public function actionAbout()
     {
         return $this->render('about');
     }
         
     public function actionValidate() {
-        $user = Utilisateur::find()->where( ['user_id' => Yii::$app->user->identity->id] )->one();        
+        $user = Utilisateur::getConnectedUser();        
         $params = Yii::$app->request->bodyParams;
 //        $result = '';
         foreach ($params as $k => $v){
@@ -183,28 +175,27 @@ class SiteController extends Controller
 //            }
         }
 
-        return $this->saveRealisation(1, 1, 80, 100, $user->id);
+        return $this->saveRealisation(1, 1, 80, 100, $user->id, Realisation::ETAT_VALID);
     }
     
-    public function actionLog() {
-        $this->render('@app/views/login/Log');
-    }
-
-    private function saveRealisation($exercice_id, $indicateur_id, $realise, $prevue, $utilisateur_id) {
+    private function saveRealisation($exercice_id, $indicateur_id, $realise, $prevue, $utilisateur_id, $etat) {
         $realisation = new \app\models\Realisation();
         $realisation->exercice_id = $exercice_id;
         $realisation->indicateur_id = $indicateur_id;
         $realisation->realise = $realise;
         $realisation->prevue = $prevue;
         $realisation->utilisateur_id = $utilisateur_id;
-        $realisation->etat = \app\models\Realisation::ETAT_VALID;
+        $realisation->etat = $etat;
 //        $result = '';
-//        if ($realisation->save()){
+        if ($realisation->save(true /* runValidation = true*/)){
+            $realisation->refresh(); // to get the id back from the db
+            return $realisation;
 //            $result .= 'id:'+$realisation->id.',';
-//        } else {
+        } else {
+            return NULL;
 //            $result .= implode('-', $realisation->getErrorSummary(true));
-//        }
-        return $realisation->save();
+        }
+//        var_dump($result);
     }
 
     

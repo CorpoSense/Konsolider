@@ -91,4 +91,8 @@ class Realisation extends \yii\db\ActiveRecord
     public function getEtat() {
         return $this->etat == self::ETAT_VALID?'Validé': 'Non Validé';
     }
+    
+    public static function hasExercice($exercice_id) {
+        return (!empty(self::find()->where(['exercice_id' => $exercice_id])->one()));
+    }
 }

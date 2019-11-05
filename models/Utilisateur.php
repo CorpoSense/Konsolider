@@ -93,5 +93,9 @@ class Utilisateur extends \yii\db\ActiveRecord
     {
         return $this->id;
     }
+    
+    public static function getConnectedUser() {
+        return self::find()->where(['user_id'=> Yii::$app->user->id])->one();
+    }
  
 }

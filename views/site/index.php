@@ -11,10 +11,6 @@ $this->title = Yii::$app->name.' v1.0';
 <div class="site-index">
 
     <div class="container">
-        <div class="row">
-            <h1><?php //echo Yii::$app->user->identity->getRole() ?></h1>
-            <p><?php //echo (!Yii::$app->user->isGuest && Yii::$app->user->identity->isAdmin())?'yes':'no' ?></p>
-        </div>
       <div class="row">
         <div class="col-md-12">
 
@@ -36,7 +32,7 @@ $this->title = Yii::$app->name.' v1.0';
 
             } else {
               // user role is 'user'
-                echo $this->render('_user', ['exercices' => $exercices/*[0], 'indicateurs' => $indicateurs*/]);
+                echo $this->render('_user', ['realisations' => $realisations]);
             }
             ?>
             <?php
