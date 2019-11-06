@@ -1,6 +1,6 @@
 {
-    "name": "Consolider",
-    "description": "Consolider is Management Tool",
+    "name": "Konsolider",
+    "description": "Konsolider is Management Tool",
     "keywords": ["yii2", "framework", "basic", "project template"],
     "homepage": "http://www.yiiframework.com/",
     "type": "project",
