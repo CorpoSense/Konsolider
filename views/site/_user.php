@@ -5,12 +5,18 @@
 <div class="row ">
     
     <div class="col-md-12">
-        <ul>
+        <?php $items = [] ?>
             <?php foreach ($realisations as $realisation): ?>
-            <li>
-                <pre><?= var_dump($realisation->toArray()) ?></pre>
-            </li>
+                <?php //echo var_dump($realisation->toArray()) ?>
+                <?php array_push($items, [
+                    'label' => $realisation->exercice->rapport->nom,
+                    'content' => $realisation->id
+                    
+                ]); ?>
             <?php endforeach; ?>
-        </ul>
+                <?php echo \yii\bootstrap\Tabs::widget([
+                        'items' => $items
+                    ]); ?>
+        
     </div><!-- .row -->
 </div>

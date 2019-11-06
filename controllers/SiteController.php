@@ -64,7 +64,7 @@ class SiteController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
         }
-
+        
         $exercices = [];
         if (isset(Yii::$app->user->identity)){
             if (Yii::$app->user->identity->isAdmin()){
@@ -77,14 +77,14 @@ class SiteController extends Controller
                 $realisations = [];
                 if (count($exercices) > 0){                            
                     foreach ($exercices as $exercice) {
-                        // TODO: add only the realisations needed in case when only some of them are added
+                        // TODx@O: add only the realisations needed in case when only some of them are added
                         // for each $exercice check if a realisation hasn't been created yet
                         $realisations = Realisation::find()->where(['exercice_id' => $exercice->id])->all();
                         if (empty($realisations)){
                             // if so, create one
                             $indicateurs = $exercice->canevas->indicateurs;
                             foreach ($indicateurs as $indicateur) {
-                                $savedRealisation = $this->saveRealisation($exercice->id, $indicateur->id, 0.0, 0.0, $user->id, Realisation::ETAT_NONVALID);
+                                $savedRealisation = $this->createRealisation($exercice->id, $indicateur->id, 0.0, 0.0, $user->id, Realisation::ETAT_NONVALID);
                                 array_push($realisations, $savedRealisation);
                             } //foreach
                         } //if
@@ -175,10 +175,10 @@ class SiteController extends Controller
 //            }
         }
 
-        return $this->saveRealisation(1, 1, 80, 100, $user->id, Realisation::ETAT_VALID);
+        return $this->createRealisation(1, 1, 80, 100, $user->id, Realisation::ETAT_VALID);
     }
     
-    private function saveRealisation($exercice_id, $indicateur_id, $realise, $prevue, $utilisateur_id, $etat) {
+    private function createRealisation($exercice_id, $indicateur_id, $realise, $prevue, $utilisateur_id, $etat) {
         $realisation = new \app\models\Realisation();
         $realisation->exercice_id = $exercice_id;
         $realisation->indicateur_id = $indicateur_id;
