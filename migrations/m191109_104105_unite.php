@@ -3,7 +3,7 @@
 use yii\db\Schema;
 use yii\db\Migration;
 
-class m191026_205317_Canevas extends Migration
+class m191109_104105_unite extends Migration
 {
 
     public function init()
@@ -17,11 +17,11 @@ class m191026_205317_Canevas extends Migration
         $tableOptions = 'ENGINE=InnoDB';
 
         $this->createTable(
-            '{{%Canevas}}',
+            '{{%unite}}',
             [
                 'id'=> $this->primaryKey(11),
                 'nom'=> $this->string(255)->notNull(),
-                'description'=> $this->string(255)->notNull(),
+                'responsable'=> $this->string(255)->notNull(),
             ],$tableOptions
         );
 
@@ -29,6 +29,6 @@ class m191026_205317_Canevas extends Migration
 
     public function safeDown()
     {
-        $this->dropTable('{{%Canevas}}');
+        $this->dropTable('{{%unite}}');
     }
 }

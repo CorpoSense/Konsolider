@@ -3,7 +3,7 @@
 use yii\db\Schema;
 use yii\db\Migration;
 
-class m191026_205323_Utilisateur extends Migration
+class m191109_104107_utilisateur extends Migration
 {
 
     public function init()
@@ -17,24 +17,24 @@ class m191026_205323_Utilisateur extends Migration
         $tableOptions = 'ENGINE=InnoDB';
 
         $this->createTable(
-            '{{%Utilisateur}}',
+            '{{%utilisateur}}',
             [
                 'id'=> $this->primaryKey(11),
                 'nom'=> $this->string(255)->notNull(),
-                'prenom'=> $this->string(255),
+                'prenom'=> $this->string(255)->null()->defaultValue(null),
                 'unite_id'=> $this->integer(11)->notNull(),
                 'user_id'=> $this->integer(11)->notNull(),
             ],$tableOptions
         );
-        $this->createIndex('Utilisateur_fk0','{{%Utilisateur}}',['unite_id'],false);
-        $this->createIndex('Utilisateur_fk1','{{%Utilisateur}}',['user_id'],false);
+        $this->createIndex('Utilisateur_fk0','{{%utilisateur}}',['unite_id'],false);
+        $this->createIndex('Utilisateur_fk1','{{%utilisateur}}',['user_id'],false);
 
     }
 
     public function safeDown()
     {
-        $this->dropIndex('Utilisateur_fk0', '{{%Utilisateur}}');
-        $this->dropIndex('Utilisateur_fk1', '{{%Utilisateur}}');
-        $this->dropTable('{{%Utilisateur}}');
+        $this->dropIndex('Utilisateur_fk0', '{{%utilisateur}}');
+        $this->dropIndex('Utilisateur_fk1', '{{%utilisateur}}');
+        $this->dropTable('{{%utilisateur}}');
     }
 }

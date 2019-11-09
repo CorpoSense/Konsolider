@@ -3,7 +3,7 @@
 use yii\db\Schema;
 use yii\db\Migration;
 
-class m191026_205321_Realisation extends Migration
+class m191109_104104_realisation extends Migration
 {
 
     public function init()
@@ -17,7 +17,7 @@ class m191026_205321_Realisation extends Migration
         $tableOptions = 'ENGINE=InnoDB';
 
         $this->createTable(
-            '{{%Realisation}}',
+            '{{%realisation}}',
             [
                 'id'=> $this->primaryKey(11),
                 'prevue'=> $this->decimal(10)->notNull(),
@@ -26,20 +26,19 @@ class m191026_205321_Realisation extends Migration
                 'exercice_id'=> $this->integer(11)->notNull(),
                 'utilisateur_id'=> $this->integer(11)->notNull(),
                 'etat'=> $this->integer(11)->notNull(),
-                
             ],$tableOptions
         );
-        $this->createIndex('Realisation_fk1','{{%Realisation}}',['exercice_id'],false);
-        $this->createIndex('Realisation_fk2','{{%Realisation}}',['utilisateur_id'],false);
-        $this->createIndex('Realisation_fk0','{{%Realisation}}',['indicateur_id'],false);        
+        $this->createIndex('Realisation_fk1','{{%realisation}}',['exercice_id'],false);
+        $this->createIndex('Realisation_fk2','{{%realisation}}',['utilisateur_id'],false);
+        $this->createIndex('Realisation_fk0','{{%realisation}}',['indicateur_id'],false);
 
     }
 
     public function safeDown()
     {
-        $this->dropIndex('Realisation_fk0', '{{%Realisation}}');
-        $this->dropIndex('Realisation_fk2', '{{%Realisation}}');
-        $this->dropIndex('Realisation_fk1', '{{%Realisation}}');
-        $this->dropTable('{{%Realisation}}');
+        $this->dropIndex('Realisation_fk1', '{{%realisation}}');
+        $this->dropIndex('Realisation_fk2', '{{%realisation}}');
+        $this->dropIndex('Realisation_fk0', '{{%realisation}}');
+        $this->dropTable('{{%realisation}}');
     }
 }

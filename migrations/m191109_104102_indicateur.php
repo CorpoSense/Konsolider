@@ -3,7 +3,7 @@
 use yii\db\Schema;
 use yii\db\Migration;
 
-class m191026_205319_Indicateur extends Migration
+class m191109_104102_indicateur extends Migration
 {
 
     public function init()
@@ -17,7 +17,7 @@ class m191026_205319_Indicateur extends Migration
         $tableOptions = 'ENGINE=InnoDB';
 
         $this->createTable(
-            '{{%Indicateur}}',
+            '{{%indicateur}}',
             [
                 'id'=> $this->primaryKey(11),
                 'nom'=> $this->string(255)->notNull(),
@@ -28,13 +28,13 @@ class m191026_205319_Indicateur extends Migration
                 'canvevas_id'=> $this->integer(11)->notNull(),
             ],$tableOptions
         );
-        $this->createIndex('Indicateur_fk0','{{%Indicateur}}',['canvevas_id'],false);
-       
+        $this->createIndex('Indicateur_fk0','{{%indicateur}}',['canvevas_id'],false);
+
     }
 
     public function safeDown()
     {
-        $this->dropIndex('Indicateur_fk0', '{{%Indicateur}}');
-        $this->dropTable('{{%Indicateur}}');
+        $this->dropIndex('Indicateur_fk0', '{{%indicateur}}');
+        $this->dropTable('{{%indicateur}}');
     }
 }

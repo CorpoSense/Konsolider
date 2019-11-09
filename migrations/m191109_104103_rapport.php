@@ -3,7 +3,7 @@
 use yii\db\Schema;
 use yii\db\Migration;
 
-class m191026_205320_Rapport extends Migration
+class m191109_104103_rapport extends Migration
 {
 
     public function init()
@@ -17,7 +17,7 @@ class m191026_205320_Rapport extends Migration
         $tableOptions = 'ENGINE=InnoDB';
 
         $this->createTable(
-            '{{%Rapport}}',
+            '{{%rapport}}',
             [
                 'id'=> $this->primaryKey(11),
                 'nom'=> $this->string(255)->notNull(),
@@ -30,6 +30,6 @@ class m191026_205320_Rapport extends Migration
 
     public function safeDown()
     {
-        $this->dropTable('{{%Rapport}}');
+        $this->dropTable('{{%rapport}}');
     }
 }
