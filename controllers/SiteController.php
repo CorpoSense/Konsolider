@@ -14,6 +14,7 @@ use app\models\Exercice;
 use app\models\Realisation;
 use app\models\Indicateur;
 use app\models\Utilisateur;
+use app\models\Rapport;
 
 class SiteController extends Controller
 {
@@ -23,9 +24,12 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
+                //'only' is used for actionLogout()
                 'only' => ['logout'],
+                //are applied for the selected action
                 'rules' => [
                     [
+                        //
                         'actions' => ['logout'],
                         'allow' => true,
                         'roles' => ['@'],
@@ -55,16 +59,23 @@ class SiteController extends Controller
     }
 
     public function actionIndex()
-    {
-        // if (Yii::$app->user->isGuest) {
-        //     return $this->redirect(['site/login']);
-        // }
-
+    { 
+//un tableau pour sauvgarder
+        $contenu=[];
+        $array_exercice_id=[];
+        $i=0;
+        $realisations =array();
+          if (Yii::$app->user->isGuest) {
+             return $this->redirect(['site/login']);
+          }
+//récuperer la date actuelle
+        $date=date('Y');       
+        $date_now= date('Y', strtotime($date));
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+              return $this->goBack();
         }
-        
+//création de tableau exercice
         $exercices = [];
         if (isset(Yii::$app->user->identity)){
             if (Yii::$app->user->identity->isAdmin()){
@@ -73,24 +84,48 @@ class SiteController extends Controller
             } else {
                 // role "user"
                 $user = Utilisateur::getConnectedUser();
-                $exercices = Exercice::find()->where(['unite_id' => $user->unite->id])->all();
-                $realisations = [];
+//modification by amar Hi this the lines that i've adeded
+                //get all the report
+                $rapports=Rapport::find()->all();
+//the purpose is to get all the reports of the year
+                foreach ($rapports as $rapport) {
+                    
+                    $contenu=array($rapport->id);
+                    $contenu=array_unique($contenu);
+//get the year of the report date 
+                    $date_debut=date('Y', strtotime($rapport->debut));
+//condition check if the start_date is in the same actuall year
+                    if($date_debut==$date_now){
+                        
+                       $exercices = Exercice::find()->where(['unite_id' => $user->unite->id,'rapport_id'=>$rapport->id])->all();
+                    }
+//store the exercice_id in array_exercices_id
+                    foreach ($exercices as $exercice) {
+                        $array_exercice_id[$i]= $exercice->id;
+                        $i++;
+                    }
+//
                 if (count($exercices) > 0){                            
                     foreach ($exercices as $exercice) {
-                        // TODx@O: add only the realisations needed in case when only some of them are added
-                        // for each $exercice check if a realisation hasn't been created yet
+ // TODx@O: add only the realisations needed in case when only some of them are added
+// for each $exercice check if a realisation hasn't been created yet
                         $realisations = Realisation::find()->where(['exercice_id' => $exercice->id])->all();
                         if (empty($realisations)){
                             // if so, create one
                             $indicateurs = $exercice->canevas->indicateurs;
                             foreach ($indicateurs as $indicateur) {
                                 $savedRealisation = $this->createRealisation($exercice->id, $indicateur->id, 0.0, 0.0, $user->id, Realisation::ETAT_NONVALID);
-                                array_push($realisations, $savedRealisation);
+
+                                $realisations[]= $savedRealisation;
+
                             } //foreach
                         } //if
                     } //foreach
-                } //if
-                return $this->render('index', [
+                } // 
+                }
+//get only the realisation of the exercice of certain rapport of certain unite authentified the condition used in where is the exercice_id of all the report of the actuall year
+                $realisations = Realisation::find()->where(['exercice_id' => $array_exercice_id])->all();
+                 return $this->render('index', [
                     'model' => $model,
                     'realisations' => $realisations
                 ]);
@@ -105,19 +140,18 @@ class SiteController extends Controller
 
     public function actionLogin()
     {
-        if (!Yii::$app->user->isGuest) {
+               if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
-
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
         }
-
         $model->password = '';
         return $this->render('login', [
             'model' => $model,
         ]);
+
     }
 
     public function actionLogout()
@@ -197,6 +231,7 @@ class SiteController extends Controller
         }
 //        var_dump($result);
     }
+//function added to fill the indicateur of a certain exercice of a certain vancevas
 
     
 }
