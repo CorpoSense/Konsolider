@@ -4,6 +4,7 @@
 
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
+use app\models\Rapport;
 
 $this->title = Yii::$app->name.' v1.0';
 ?>
@@ -13,8 +14,10 @@ $this->title = Yii::$app->name.' v1.0';
     <div class="container">
       <div class="row">
         <div class="col-md-12">
-
+          <input type="hidden" id="user_id" value="<?php echo $amar; ?>" name="">
           <?php
+          
+
           if (Yii::$app->user->isGuest){
 
             echo '<h2>Connexion</h2>';
@@ -27,8 +30,9 @@ $this->title = Yii::$app->name.' v1.0';
 
           } else {
             // user role is 'admin'
+            $rapport=Rapport::find()->all();
             if (Yii::$app->user->identity->isAdmin()){
-                echo $this->render('_admin', ['exercices' => $exercices]);
+                echo $this->render('_admin', ['realisations' => $realisations,'exercices' => $exercices,'rapport'=>$rapport]);
 
             } else {
               // user role is 'user'

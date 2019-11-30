@@ -25,12 +25,12 @@ class SiteController extends Controller
             'access' => [
                 'class' => AccessControl::className(),
                 //'only' is used for actionLogout()
-                'only' => ['logout'],
+                'only' => ['logout','b'],
                 //are applied for the selected action
                 'rules' => [
                     [
                         //
-                        'actions' => ['logout'],
+                        'actions' => ['logout','b'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -40,6 +40,7 @@ class SiteController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'logout' => ['post'],
+                    'b' => ['post','get'],
                 ],
             ],
         ];
@@ -57,11 +58,46 @@ class SiteController extends Controller
             ],
         ];
     }
-
+     public function actionB()
+    { 
+        $res = (object)array("success"=>false);
+        $array_indicateur=[];
+        $i=0;
+        $realiser=[];
+        $prevue=[];
+        $realiser = $_POST['realiser'];
+        $prevue = $_POST['prevue'];
+        $exercice_id=$_POST['exercice_id'];
+        echo $exercice_id;
+        echo $realiser[0];
+        $user_id=$_POST['user_id'];
+        $exercice = Exercice::find()->where(['id' => $exercice_id])->all();
+         $indicateurs = Indicateur::find()->where(['canvevas_id' => $exercice[0]->canevas_id])->all();
+           foreach ($indicateurs  as $indicateur){
+            //if($model->etat==1)
+               // return 0;
+            $model = Realisation::find()->where(
+                [
+                    'indicateur_id' => $indicateur->id,
+                    'utilisateur_id'=>$user_id,
+                    'exercice_id'=>$exercice_id
+                ])->one();
+            $model->prevue =$realiser[$i];
+            $model->realise=$prevue[$i];
+            $i++;
+            if($model->etat==0){
+                echo "string";
+                $model->etat=1;
+                $model->save();
+            }
+        }   
+    }
     public function actionIndex()
     { 
 //un tableau pour sauvgarder
+        $user = Utilisateur::getConnectedUser();
         $contenu=[];
+        $user_id;
         $array_exercice_id=[];
         $i=0;
         $realisations =array();
@@ -81,9 +117,10 @@ class SiteController extends Controller
             if (Yii::$app->user->identity->isAdmin()){
                 // role "admin"
                 $exercices = Exercice::find()->orderBy('unite_id')->all();
+
             } else {
                 // role "user"
-                $user = Utilisateur::getConnectedUser();
+                
 //modification by amar Hi this the lines that i've adeded
                 //get all the report
                 $rapports=Rapport::find()->all();
@@ -127,7 +164,8 @@ class SiteController extends Controller
                 $realisations = Realisation::find()->where(['exercice_id' => $array_exercice_id])->all();
                  return $this->render('index', [
                     'model' => $model,
-                    'realisations' => $realisations
+                    'realisations' => $realisations,
+                    'amar'=>$user->id
                 ]);
                 
             }
@@ -135,9 +173,29 @@ class SiteController extends Controller
         return $this->render('index', [
             'model' => $model,
             'exercices' => $exercices,
+            'amar'=>"",
+            'realisations' => $realisations
         ]);
     }
-
+    public function actionDetail($id)
+    {
+        echo  $_GET['id'];
+        $realisations = Realisation::find()->where(['exercice_id' => $id])->all();
+       
+        return $this->render('detail', [
+                    'model' => "",
+                    'realisations' => $realisations,
+                    'amar'=>""
+                ]);
+    }
+      public function actionSearch($id)
+    {
+        return $this->render('index', [
+                    'exercices' => [],
+                    'realisations' => [],
+                    'amar'=>""
+                ]);
+    }
     public function actionLogin()
     {
                if (!Yii::$app->user->isGuest) {

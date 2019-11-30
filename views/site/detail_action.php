@@ -53,32 +53,28 @@ $this->params['breadcrumbs'][] = $this->title;
                <input type="hidden" class='<?php echo $array_exercice_id-1; ?>'  value='<?php echo $count_indicateur; ?>' >
      <?php //$button_id=$button_id+100-1;?>          
   <?php foreach ($realisation as $model): ?>
-       <div class="col-md-3"><?= $model->indicateur->nom ?></div>
-      <div class="col-md-4">
-
+      <div class="col-md-6">
       <!--champ prevue-->
           <?php if($model->etat==0){?>
-          <?= $form->field($model, 'prevue')->textInput(['id'=>$i,'class'=>[$button_id+100-1,'form-control'],'size'=>5])->label(false)
+          <?= $form->field($model, 'prevue')->textInput(['id'=>$i,'class'=>$button_id+100-1])->label($model->indicateur->nom.' prévue')
         ?>
         <?php }else{?>
-          <?= $form->field($model, 'prevue')->textInput(['id'=>$i,'class'=>[$button_id+100-1,'form-control'], 'placeholder' => 'Title', 'disabled' => true,'size'=>5])->label(false)?>
+          <?= $form->field($model, 'prevue')->textInput(['id'=>$i,'class'=>$button_id+100-1, 'placeholder' => 'Title', 'disabled' => true])->label($model->indicateur->nom.' prévue')?>
         <?php }?>
       <?php $i++; ?>
       </div>
-     <div class="col-md-4">
+     <div class="col-md-6">
       <!--champ realise-->
            <?php if($model->etat==0){?>
-         <?= $form->field($model, 'realise')->textInput(['id'=>$i,'class'=>[$button_id+100-1,'form-control'],'size'=>5])->label(false)?>
+         <?= $form->field($model, 'realise')->textInput(['id'=>$i,'class'=>$button_id+100-1])->label($model->indicateur->nom.' realisée')?>
         <?php }else{?>
-         <?= $form->field($model, 'realise')->textInput(['id'=>$i,'class'=>[$button_id+100-1,'form-control'], 'placeholder' => 'Title', 'disabled' => true,'size'=>5])->label(false)?>
+         <?= $form->field($model, 'realise')->textInput(['id'=>$i,'class'=>$button_id+100-1, 'placeholder' => 'Title', 'disabled' => true])->label($model->indicateur->nom.' realisée')?>
         <?php }?>
       <?php $i++; ?>
       </div>
     <?php endforeach; ?>
      <?php $form = ActiveForm::end();?>
-     
-</div>
-<?php 
+     <?php 
      if($indicateurs_remplis==$count_indicateur )
        {
         $test=1;
@@ -86,12 +82,7 @@ $this->params['breadcrumbs'][] = $this->title;
        } 
        if($test==1){
       ?>
-      
-        
-     <?= Html::submitButton( Yii::t('app', 'Save'),['class' =>[$button_id-1,'btn','btn-primary '],'id'=>$array_exercice_id ,'disabled' => true]) ?>
-     <?php }
-
-     if($test==0){?>
     
-    <?= Html::submitButton( Yii::t('app', 'Save'),['class' =>[$button_id-1,'btn','btn-primary'],'id'=>$array_exercice_id ]) ?>
+     <?php }if($test==0){?>
     <?php }?>
+</div>

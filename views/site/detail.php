@@ -49,7 +49,7 @@ use yii\widgets\Pjax;
                 $items[]= [
                     'id'=>$realisation[0]->id,
                     'label' => $realisation[0]->exercice->rapport->nom,
-                    'content' =>  $this->render('realisation_form', ['realisation' => $realisation,"exercice_id"=>$realisation[0]->exercice_id])
+                    'content' =>  $this->render('detail_action', ['realisation' => $realisation,"exercice_id"=>$realisation[0]->exercice_id])
                 ];
             
                 ?>
@@ -82,7 +82,7 @@ $('.'+i).on('click',{'idx':i},function(e){
                   
                     var exercice_id=$('button.'+e.data.idx).attr('id');
                     var re=$('form #'+j+'.'+k).val()
-                    alert(re)
+                    alert(re+'valeur')
                     if(j%2==0)
                         prevue.push($('form #'+j+'.'+k).val())
                     else
