@@ -158,37 +158,16 @@ class SiteController extends Controller
     public function actionConfirm() {
         $user = Utilisateur::getConnectedUser();
         $params = Yii::$app->request->bodyParams;
-        /*echo '<pre>';
-        var_dump($params);
-array(4) {
-  ["_csrf"]=>
-  string(88) "vmgelDwaxtFa5hkm3MEkelFBleZCThr3m0G-aVibN-nzAybEeC7_lzSufmnrs3U2ATXQ0yp5Xr7vEscgKPVRmQ=="
-  ["realisation-id-31"]=>
-  string(2) "31"
-  ["prevue-1"]=>
-  string(3) "200"
-  ["realise-1"]=>
-  string(2) "90"
-}
-        echo '</pre>';
-        die('');*/
         $result = '';
         $data = [];
         foreach ($params as $k => $v){
-//            $data = new Realisation();
             if (strstr($k, 'realisation-id-')){
                 $data['id'] = $v;
-//            } else if (strstr($k, 'exercice-id-')){              
-//                $data['exercice_id'] = $v;
-//            } else if (strstr($k, 'mesure-id-')){              
-//                $data['indicateur_id'] = $v;
             } else if (strstr($k, 'realise-')) {
                 $data['realise'] = $v;
             } else if (strstr($k, 'prevue-')){
                 $data['prevue']= $v;
             }
-//            $realisation['utilisateur_id'] = $user->id;
-//            $realisation['etat'] = Realisation::ETAT_NONVALID; // ETAT_VALID; temporary
         }
         $realisation = Realisation::findOne( $data['id'] );
         $realisation->prevue = $data['prevue'];
@@ -200,46 +179,9 @@ array(4) {
         } else {
             $result .= implode('-', $realisation->getErrorSummary(false));
         }
-//        echo '<pre>';
-//        var_dump($realisation);
-//        echo '</pre>';
-//        die('');
         Yii::$app->session->setFlash('success', $result);
         return $this->redirect(['site/index']);
     }
-        
-    /*public function actionValidate() {
-        $user = Utilisateur::getConnectedUser();        
-        $params = Yii::$app->request->bodyParams;
-//        $result = '';
-        foreach ($params as $k => $v){
-            
-            $realisation = new \app\models\Realisation();
-            
-            if (strstr($k, 'exercice-id')){
-                $realisation->exercice_id = $v;
-                
-            } else if (strstr($k, 'mesure-id-')){              
-                $realisation->indicateur_id = $v;
-                
-            } else if (strstr($k, 'realise-')) {
-                $realisation->realise = $v;
-                
-            } else if (strstr($k, 'prevue-')){
-                $realisation->prevue = $v;
-            }
-            $realisation->utilisateur_id = $user->id;
-            $realisation->etat = \app\models\Realisation::ETAT_VALID;
-            
-//            if ($realisation->save()){
-//                $result .= 'id:'+$realisation->id.' saved.';
-//            } else {
-//                $result .= implode('-', $realisation->getErrorSummary(false));
-//            }
-        }
-
-        return $this->createRealisation(1, 1, 80, 100, $user->id, Realisation::ETAT_VALID);
-    }*/
     
     private function createRealisation($exercice_id, $indicateur_id, $realise, $prevue, $utilisateur_id, $etat) {
         $realisation = new \app\models\Realisation();
