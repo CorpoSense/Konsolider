@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Url;
+$formatter = \Yii::$app->formatter;
 
 ?>
 
@@ -33,15 +34,17 @@ use yii\helpers\Url;
                 </td>
                 <td>
                   <div class="progress">
-                      <?php $rand = rand(1,100) ?>
-                    <div class="progress-bar progress-bar-<?= $rand < 70?($rand <30?'danger':'primary'):'success' ?>" role="progressbar" style="width: <?= $rand ?>%;">
-                      <?= $rand ?>%
+                      <?php $progress = $exercice->getProgression() ?>
+                    <div class="progress-bar progress-bar-<?= $progress < 70?($progress <30?'danger':'primary'):'success' ?>" 
+                         role="progressbar" style="width: <?= $progress ?>%;">
+                      <?= $formatter->asPercent($progress/100, 0) ?>
                     </div>
                   </div>
 
                 </td>
                 <td>
-                    <a href="<?= Url::to(['exercice/view', 'id' => $exercice->id ]) ?>" class="btn btn-info btn-sm"> <span class="glyphicon glyphicon-pencil"></span> </a>
+                    <a href="<?= Url::to(['exercice/view', 'id' => $exercice->id ]) ?>" 
+                       class="btn btn-info btn-sm"> <span class="glyphicon glyphicon-pencil"></span> </a>
                 </td>
             </tr>
 

@@ -85,4 +85,19 @@ class Exercice extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Realisation::className(), ['exercice_id' => 'id']);
     }
+    
+    public function getProgression() {
+        $realisations = Realisation::find(['exercice_id' => $this->id])->all();
+        $total = 0;
+        $valide = 0;
+        foreach ($realisations as $realisation) {
+            if ($realisation->exercice->canevas_id == $this->canevas_id && $realisation->exercice->unite_id == $this->unite_id){
+                if ($realisation->etat == Realisation::ETAT_VALID){
+                    $valide += 1;
+                }
+                $total += 1;
+            }
+        }
+        return ($total > 0? ($valide*100/$total):0 );
+    }
 }
