@@ -95,6 +95,9 @@ class Utilisateur extends \yii\db\ActiveRecord
     }
     
     public static function getConnectedUser() {
+        if (Yii::$app->user->isGuest){
+            return NULL;
+        }
         return self::find()->where(['user_id'=> Yii::$app->user->id])->one();
     }
  

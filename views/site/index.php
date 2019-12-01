@@ -32,7 +32,7 @@ $this->title = Yii::$app->name.' v1.0';
 
             } else {
               // user role is 'user'
-                echo $this->render('_user', ['realisations' => $realisations]);
+                echo $this->render('_user', ['exercices' => $exercices, 'realisations' => $realisations]);
             }
             ?>
             <?php
