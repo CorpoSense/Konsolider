@@ -8,6 +8,7 @@ use app\models\RealisationSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use arogachev\excel\export\basic\Exporter;
 
 /**
  * RealisationController implements the CRUD actions for Realisation model.
@@ -123,5 +124,61 @@ class RealisationController extends Controller
         }
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    }
+    
+    public function actionExport() {
+        $file = Yii::getAlias('@app/RealisationExport.xlsx');
+        $exporter = new Exporter([
+            'query' => Realisation::find(),
+            'filePath' => $file,
+//            'dataProvider' => Realisation::className(),
+            'sheetTitle' => 'Realisations',
+            'standardModelsConfig' => [
+                [
+                    'className' => Realisation::className(),
+                    'extendStandardAttributes' => false,
+//                    'attributesOrder' => ['prevue', 'realise', 'etat'],
+                    'standardAttributesConfig' => [
+                        [
+                            'name' => 'id',
+                            'label' => 'ID'
+                        ],
+                        [
+                            'name' => 'prevue',
+                            'label' => 'Prevue'
+                        ],
+                        [
+                            'name' => 'realise',
+                            'label' => 'Realise'
+                        ],
+                        [
+                            'name' => 'utilisateur_id',
+                            'label' => 'Utilisateur',
+                            'valueReplacement' => function ($model) {
+                                return $model->utilisateur->nom;
+                            },
+                        ],
+                        [
+                            'name' => 'indicateur_id',
+                            'label' => 'Indicateur',
+                            'valueReplacement' => function ($model) {
+                                return $model->indicateur->nom;
+                            },
+                        ],
+                        [
+                            'name' => 'etat',
+                            'label' => 'Etat'
+                        ],
+                    ]
+                ]
+            ]
+        ]);
+        $exporter->run();
+        if (file_exists($file)) {
+            Yii::$app->response->sendFile($file);
+        } else {
+            Yii::$app->session->setFlash('warning', 'Erreur lors exportation des données');
+            return $this->redirect(['index']);
+        }
     }
 }

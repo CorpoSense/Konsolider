@@ -14,9 +14,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a(Yii::t('app', 'Create Realisation'), ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    <div class="row">
+        <div class="col-md-6">
+            <?= Html::a(Yii::t('app', 'Create Realisation'), ['create'], ['class' => 'btn btn-success']) ?>
+        </div>
+        <div class="col-md-6">
+            <?= Html::a(Yii::t('app', 'Export XLSX'), ['export'], ['class' => 'btn btn-info pull-right']) ?>
+            
+        </div>
+    </div>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
