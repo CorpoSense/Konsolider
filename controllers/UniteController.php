@@ -8,6 +8,10 @@ use app\models\UniteSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use arogachev\excel\import\basic\Importer;
+use yii\helpers\Html;
+use app\models\UploadForm;
+use yii\web\UploadedFile;
 
 /**
  * UniteController implements the CRUD actions for Unite model.
@@ -35,10 +39,12 @@ class UniteController extends Controller
      */
     public function actionIndex()
     {
+        $modelUpload = new UploadForm();
         $searchModel = new UniteSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
+            'modelUpload' => $modelUpload,
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -104,8 +110,16 @@ class UniteController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
+        try {
+            $this->findModel($id)->delete();
+        } catch (\Exception $e) {
+            if ($e->getCode()===23000){ // constraints key violation
+                \Yii::$app->session->setFlash('warning', 'Impossible de supprimer les données de cette unité.');
+            } else {
+                \Yii::$app->session->setFlash('error', 'Erreur: '.$e->getMessage());
+            }
+        }
+        
         return $this->redirect(['index']);
     }
 
@@ -124,4 +138,62 @@ class UniteController extends Controller
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
+    
+    public function actionImport() {
+       $model = new UploadForm();
+       
+       if (Yii::$app->request->isPost) {
+          $model->file = UploadedFile::getInstance($model, 'file');
+          if ($model->upload()) {
+             // file is uploaded successfully
+
+            $file = $model->getFullPath(); //Yii::getAlias('@app/UnitesImport.xlsx');
+            if (!isset($file) || $file == '') {
+                Yii::$app->session->setFlash('warning', 'Fichier introuvable!');
+                return $this->redirect(['index']);
+            }
+            $importer = new Importer([
+                'filePath' => $file,
+                'standardModelsConfig' => [
+                    [
+                        'className' => Unite::className(),
+                        'standardAttributesConfig' => [
+                            /*[
+                                'name' => 'type',
+                                'valueReplacement' => Test::getTypesList(),
+                            ],
+                            [
+                                'name' => 'description',
+                                'valueReplacement' => function ($value) {
+                                    return $value ? Html::tag('p', $value) : '';
+                                },
+                            ],
+                            [
+                                'name' => 'category_id',
+                                'valueReplacement' => function ($value) {
+                                    return Category::find()->select('id')->where(['name' => $value]);
+                                },
+                            ],*/
+                        ],
+                    ],
+                ],
+            ]);
+            if ($importer->run()) {
+                Yii::$app->session->setFlash('success', 'Fichier importé avec succès.');
+            } else {
+                Yii::$app->session->setFlash('warning', $importer->error);
+                if ($importer->wrongModel) {
+                    Yii::$app->session->addFlash('warning', Html::errorSummary($importer->wrongModel));
+                }
+            }
+            // delete imported file.
+            unlink($file);
+          } else {
+              Yii::$app->session->setFlash('error', 'Error while uploading a file.');
+          }
+       }
+       
+       return $this->redirect(['index']);
+    }
+    
 }
