@@ -20,15 +20,17 @@ class m191109_104105_unite extends Migration
             '{{%unite}}',
             [
                 'id'=> $this->primaryKey(11),
-                'nom'=> $this->string(255)->notNull(),
+                'nom'=> $this->string(255)->notNull()->unique(),
                 'responsable'=> $this->string(255)->notNull(),
             ],$tableOptions
         );
+        $this->createIndex('idx_nom_unique','{{%Unite}}',['nom'],true);
 
     }
 
     public function safeDown()
     {
+        $this->dropIndex('idx_nom_unique', '{{%Unite}}');
         $this->dropTable('{{%unite}}');
     }
 }

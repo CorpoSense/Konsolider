@@ -148,6 +148,7 @@ class UniteController extends Controller
              // file is uploaded successfully
 
             $file = $model->getFullPath(); //Yii::getAlias('@app/UnitesImport.xlsx');
+            
             if (!isset($file) || $file == '') {
                 Yii::$app->session->setFlash('warning', 'Fichier introuvable!');
                 return $this->redirect(['index']);
@@ -181,9 +182,10 @@ class UniteController extends Controller
             if ($importer->run()) {
                 Yii::$app->session->setFlash('success', 'Fichier importé avec succès.');
             } else {
-                Yii::$app->session->setFlash('warning', $importer->error);
                 if ($importer->wrongModel) {
-                    Yii::$app->session->addFlash('warning', Html::errorSummary($importer->wrongModel));
+                    Yii::$app->session->setFlash('error', Html::errorSummary($importer->wrongModel));
+                } else {
+                    Yii::$app->session->setFlash('warning', $importer->error);
                 }
             }
             // delete imported file.

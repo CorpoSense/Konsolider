@@ -21,7 +21,22 @@ class UploadForm extends Model
     public function rules()
     {
         return [
-            [['file'], 'file', /*'extensions' => 'xlsx' ,*/ 'skipOnEmpty' => false],
+            [['file'], 'file', //'extensions' => 'xlsx,xls',
+                'mimeTypes'  => [
+                    /*'application/vnd.ms-office',
+                    'application/msexcel',
+                    'application/x-msexcel',
+                    'application/x-ms-excel',
+                    'application/x-excel',
+                    'application/x-dos_ms_excel',
+                    'application/xls',
+                    'application/x-xls',*/
+                    'application/vnd.ms-excel',
+                    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                    ],
+                'wrongMimeType'=> \Yii::t('app','Only excel files are allowed.'),
+                'checkExtensionByMimeType' => false,
+                'skipOnEmpty' => false],
         ];
     }
     
@@ -32,8 +47,9 @@ class UploadForm extends Model
     }
     
       public function upload() {
-         if ($this->validate()) {
-            $this->file->saveAs('../uploads/' . $this->file->baseName . '.' .
+         if ($this->file && ($this->validate() || $this->file->type=='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')) {
+             //If you're using the "basic" template folder uploads should be created under web
+            $this->file->saveAs('uploads/' . $this->file->baseName . '.' .
                $this->file->extension);
             return true;
          } else {
@@ -42,7 +58,7 @@ class UploadForm extends Model
       }
       
       public function getFullPath() {
-          $fullPath = '../uploads/'.$this->file->baseName.'.'.$this->file->extension;
+          $fullPath = 'uploads/'.$this->file->baseName.'.'.$this->file->extension;
           if (file_exists($fullPath)){
               return $fullPath;
           }

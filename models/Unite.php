@@ -32,6 +32,7 @@ class Unite extends \yii\db\ActiveRecord
         return [
             [['nom', 'responsable'], 'required'],
             [['nom', 'responsable'], 'string', 'max' => 255],
+            [['nom'], 'unique'],
         ];
     }
 
