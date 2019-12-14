@@ -1,6 +1,18 @@
 <?php
-
 use yii\helpers\Url;
+use yii\jui\ProgressBar;
+use yii\helpers\ArrayHelper;
+use yii\widgets\ActiveForm;
+use app\models\Exercice;
+use app\models\Realisation;
+use app\models\Rapport;
+use app\models\Unite;
+use app\models\Canevas;
+use  yii\grid\GridView;
+use yii\helpers\Html;  
+
+
+use yii\data\ActiveDataProvider;
 $formatter = \Yii::$app->formatter;
 
 ?>
@@ -10,50 +22,101 @@ $formatter = \Yii::$app->formatter;
         <div class="page-header">
             <h4>
                 Exercice en cours: <?= count($exercices)>0?(Yii::$app->formatter->format($exercices[0]->rapport->debut, ['date', 'format' => 'yyyy'])):'<aucun>' ?>
+                
             </h4>
         </div>
-    <table id="listUnit" class="table table-hover">
-        <thead>
-        <tr>
-            <th>Unite</th>
-            <th>Canevas</th>
-            <th>Progression</th>
-            <th>Détails</th>
-        </tr>
-        </thead>
-        <tbody>
+        <?php
+        $list= Yii::$app->db->createCommand('select * from rapport')->queryAll();
+     ?>
+<?php 
 
-          <!-- <?= count($exercices) ?> -->
+ 
 
-          <?php foreach ($exercices as $exercice): ?>
+  $data[] = $exercices;
 
-            <tr>
-                <td><?= $exercice->unite->nom ?></td>
-                <td>
-                    <p><?= $exercice->canevas->nom ?></p>
-                </td>
-                <td>
-                  <div class="progress">
-                      <?php $progress = $exercice->getProgression() ?>
-                    <div class="progress-bar progress-bar-<?= $progress < 70?($progress <30?'danger':'primary'):'success' ?>" 
-                         role="progressbar" style="width: <?= $progress ?>%;">
-                      <?= $formatter->asPercent($progress/100, 0) ?>
-                    </div>
-                  </div>
+?>
+<?php 
+/*$dataProvider = new ActiveDataProvider([
+    'query' => Exercice::find(),
+]);*/
+?>
+<?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'columns' => [
+            //['class' => 'yii\grid\SerialColumn'],
+ 
+            'id',
+            [
+            'class' => 'yii\grid\DataColumn', // can be omitted, as it is the default
+            'label' => 'Canevas',
+            'value' => function ($data) {
+               return $data->canevas->nom ;
+            },
+            'filter' => Html::activeDropDownList($searchModel, 'canevas_id',$canevas,               ['class'=>'form-control','prompt'=>'chosir Canevas'])
+         ],
+            [
+                'class' => 'yii\grid\DataColumn',
+                'header' => 'Unite',
+                'value' => function ($data) {
+               return $data->unite->nom ;
+            } ,
+                'filter' => Html::activeDropDownList($searchModel, 'unite_id',$unite,               ['class'=>'form-control','prompt'=>'chosir unite'])
+            ],
+  
+            [
+                'label' => 'Taux davenacement ',
+                'format' => 'raw',
+                'value' => function ($data) {
+                    // striped animated
+                  switch ($data->getProgression()) {
+                    case $data->getProgression()>70:
+                       return \yii\bootstrap\Progress::widget(
+                        [
+                           
+                              'percent' => $data->getProgression(),
+                              'barOptions' => ['class' => 'progress-bar-success'],
+                                
+                            
+                            
+                        ]
+                    );
+                      break;
+                    case $data->getProgression()>30:
+                       return \yii\bootstrap\Progress::widget(
+                        [
+                           
+                              'percent' => $data->getProgression(),
+                              'options' => ['class' => 'progress-bar-warning'],
+                        ]
+                    );
+                      break;
+                    case $data->getProgression()<30:
+                       return \yii\bootstrap\Progress::widget(
+                        [
+                           
+                              'percent' => $data->getProgression(),
+                            'barOptions' => ['class' => 'progress-bar-danger']
+                            
+                            
+                        ]
+                    );
+                      break;
+                    
+                    default:
+                      # code...
+                      break;
+                  }
+                   
+                   
+                 
+                },
+            ],
+        
 
-                </td>
-                <td>
-                    <a href="<?= Url::to(['exercice/view', 'id' => $exercice->id ]) ?>" 
-                       class="btn btn-info btn-sm"> <span class="glyphicon glyphicon-pencil"></span> </a>
-                </td>
-            </tr>
-
-            <?php endforeach; ?>
-
-      <!-- end of foreach $exercices -->
-
-        </tbody>
-    </table>
-
-    </div><!-- .col-md-6 -->
-</div><!-- .row -->
+            
+ 
+           
+        ],
+    ]); ?>
+ 

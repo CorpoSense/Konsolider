@@ -11,9 +11,12 @@ use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\Unite;
 use app\models\Exercice;
+use app\models\Canevas;
 use app\models\Realisation;
 use app\models\Indicateur;
 use app\models\Utilisateur;
+use app\models\ExerciceSearch;
+use yii\helpers\ArrayHelper;
 
 class SiteController extends Controller
 {
@@ -56,6 +59,14 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
+
+        $searchModel = new ExerciceSearch();
+         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $canevas = Canevas::find()->all();
+       $canevas = ArrayHelper::map($canevas,'id','nom');
+       $unite = Unite::find()->all();
+       $unite = ArrayHelper::map($unite,'id','nom');
+
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
@@ -84,6 +95,9 @@ class SiteController extends Controller
                                 'exercice_id' => $exercice->id,
                                 'utilisateur_id' => $user->id,
                                 'indicateur_id' => $indicateur->id,
+                                'canevas' => $canevas,
+                                'dataProvider' => $dataProvider,
+                                'unite' => $unite,
                             ])->one();
                             // for each $exercice check if a realisation hasn't been created yet
                             if (empty($realisation)){
@@ -102,7 +116,11 @@ class SiteController extends Controller
                 return $this->render('index', [
                     'model' => $model,
                     'exercices' => $exercices,
-                    'realisations' => $realisations
+                    'realisations' => $realisations,
+                    'searchModel' => $searchModel,
+                     'canevas' => $canevas,
+                      'dataProvider' => $dataProvider,
+                      'unite' => $unite,
                 ]);
                 
             }
@@ -110,7 +128,16 @@ class SiteController extends Controller
         return $this->render('index', [
             'model' => $model,
             'exercices' => $exercices,
+            'searchModel' => $searchModel,
+            'canevas' => $canevas,
+            'dataProvider' => $dataProvider,
+            'unite' => $unite,
         ]);
+    }
+      public function actionTri($id){
+        $exercices = Exercice::find()->orderBy('unite_id')->all();
+         return $this->render('index', ['exercices' =>[],'amar'=>1]);
+
     }
 
     public function actionLogin()

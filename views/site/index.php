@@ -4,6 +4,9 @@
 
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
+use app\models\Rapport;
+use app\models\Canevas;
+use app\models\Unite;
 
 $this->title = Yii::$app->name.' v1.0';
 ?>
@@ -28,7 +31,9 @@ $this->title = Yii::$app->name.' v1.0';
           } else {
             // user role is 'admin'
             if (Yii::$app->user->identity->isAdmin()){
-                echo $this->render('_admin', ['exercices' => $exercices]);
+                $rapport=Rapport::find()->all();
+                
+                echo $this->render('_admin', ['exercices' => $exercices,'rapport'=>$rapport,'unite'=>$unite,'canevas'=>$canevas,'searchModel' => $searchModel, 'canevas' => $canevas,'dataProvider' => $dataProvider,'unite' => $unite]);
 
             } else {
               // user role is 'user'
