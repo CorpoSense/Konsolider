@@ -60,12 +60,26 @@ class SiteController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
         }
+        
         $exercices = [];
+        $unite_id = 0;
+        $rapport_id = 0;
+        $canevas_id = 0;
+        
+        $filterModel = new \app\models\FilterForm();
+        
         // if user is loggedIn
         if (!Yii::$app->user->isGuest){
+            
             if (Yii::$app->user->identity->isAdmin()){
                 // role == "admin"
-                $exercices = Exercice::find()->orderBy('unite_id')->all();
+                $query = Exercice::find();
+                if ($filterModel->load(Yii::$app->request->post()) && $filterModel->validate()){
+                        $query->andFilterWhere(['unite_id' => $filterModel->unite_id])
+                                ->andFilterWhere(['rapport_id' => $filterModel->rapport_id])
+                                ->andFilterWhere(['canevas_id' => $filterModel->canevas_id]);
+                }
+                $exercices = $query->orderBy('unite_id')->all();
             } else {
                 // role == "user"
                 $user = Utilisateur::getConnectedUser();
@@ -106,10 +120,11 @@ class SiteController extends Controller
                 ]);
                 
             }
-        }
+        } //if !isGuest()
         return $this->render('index', [
             'model' => $model,
             'exercices' => $exercices,
+            'filterModel' => $filterModel
         ]);
     }
 

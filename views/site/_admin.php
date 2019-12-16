@@ -1,17 +1,120 @@
 <?php
 
 use yii\helpers\Url;
+use yii\helpers\Html;
+use yii\bootstrap\ActiveForm;
+use kartik\select2\Select2;
+
 $formatter = \Yii::$app->formatter;
 
+$rapports = [];
+$canevas = [];
+$unites = [];
+foreach ($exercices as $exercice){
+    $rapport = $exercice->rapport;
+    if (!key_exists($rapport->id, $rapports)){
+        $rapports[$rapport->id] = $rapport->nom;
+    }
+    $caneva = $exercice->canevas;
+    if (!key_exists($caneva->id, $canevas)){
+        $canevas[$caneva->id] = $caneva->nom;
+    }
+    $unite = $exercice->unite;
+    if (!key_exists($unite->id, $unites)){
+        $unites[$unite->id] = $unite->nom;
+    }
+}
 ?>
-
+<div class="row">
+    <div class="page-header">
+        <h4>Tableau de board: <?= count($exercices)>0?(Yii::$app->formatter->format($exercices[0]->rapport->debut, ['date', 'format' => 'yyyy'])):'<aucun>' ?></h4>
+    </div>
+</div>
 <div class="row">
     <div class="col-md-12">
-        <div class="page-header">
+    <?php $form = ActiveForm::begin(['layout' => 'horizontal'/*, 'method' => 'get'*/]) ?>
+    <!--<div class="col-md-3">-->
+        <!--<label class="control-label" for="rapport_id">Rapport:</label>-->
+        <?= $form->field($filterModel, 'rapport_id')->widget(Select2::classname(), [
+            'data' => $rapports,
+            'options' => [
+                'class' => 'btn btn-primary',
+                'placeholder' => 'Sélectionner un rapport...'
+                ],
+            'pluginOptions' => [
+                'allowClear' => true
+            ],
+        ]) ?>
+        <?php /*echo kartik\select2\Select2::widget([
+            'name' => 'rapport_id',
+            'data'=> $rapports,
+            'options' => [
+                'placeholder' => 'Sélectionner le rapport'                    
+            ],
+            'pluginOptions' => [
+                'allowClear' => true
+            ],
+            'pluginEvents' => [
+               "select2:select" => "function(data) { updateTable(data.params.data); }",
+            ]
+        ])*/ ?>
+    <!--</div>-->
+    <!--<div class="col-md-3">-->
+        <!--<label class="control-label" for="unite_id">Unité:</label>-->
+        <?= $form->field($filterModel, 'unite_id')->widget(Select2::classname(), [
+            'data' => $unites,
+            'options' => ['placeholder' => 'Sélectionner l\'unité...'],
+            'pluginOptions' => [
+                'allowClear' => true
+            ],
+        ]) ?>        
+        <?php /*echo kartik\select2\Select2::widget([
+            'name' => 'unite_id',
+            'data'=> $unites,
+            'options' => [
+                'placeholder' => 'Sélectionner l\'unité'                    
+            ],
+            'pluginOptions' => [
+                'allowClear' => true
+            ],                
+        ])*/ ?>
+    <!--</div>-->
+    <!--<div class="col-md-3">-->
+        <!--<label class="control-label" for="canevas_id">Canevas:</label>-->
+        <?= $form->field($filterModel, 'canevas_id')->widget(Select2::classname(), [
+            'data' => $canevas,
+            'options' => ['placeholder' => 'Sélectionner le canevas...'],
+            'pluginOptions' => [
+                'allowClear' => true
+            ],
+        ]) ?>         
+        <?php /*echo kartik\select2\Select2::widget([
+            'name' => 'canevas_id',
+            'data'=> $canevas,
+            'options' => [
+                'placeholder' => 'Sélectionner le canevas'                    
+            ],
+            'pluginOptions' => [
+                'allowClear' => true
+            ],                
+        ])*/ ?>        
+        
+    <!--</div>-->
+    <div class="col-md-6 col-md-offset-3">
+        <div class="form-group pull-right">  
+            <?= Html::submitButton(Yii::t('app', 'Filtrer'), ['class' => 'btn btn-success']) ?>
+        </div>
+    </div>
+    <?php $form::end(); ?>
+</div>
+<br>
+<div class="row">
+    <div class="col-md-12">
+<!--        <div class="page-header">
             <h4>
                 Exercice en cours: <?= count($exercices)>0?(Yii::$app->formatter->format($exercices[0]->rapport->debut, ['date', 'format' => 'yyyy'])):'<aucun>' ?>
             </h4>
-        </div>
+        </div>-->
     <table id="listUnit" class="table table-hover">
         <thead>
         <tr>
