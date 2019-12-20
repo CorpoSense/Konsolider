@@ -23,14 +23,14 @@ class UploadForm extends Model
         return [
             [['file'], 'file', //'extensions' => 'xlsx,xls',
                 'mimeTypes'  => [
-                    /*'application/vnd.ms-office',
+                    'application/vnd.ms-office',
                     'application/msexcel',
                     'application/x-msexcel',
                     'application/x-ms-excel',
                     'application/x-excel',
                     'application/x-dos_ms_excel',
                     'application/xls',
-                    'application/x-xls',*/
+                    'application/x-xls',
                     'application/vnd.ms-excel',
                     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
                     ],
