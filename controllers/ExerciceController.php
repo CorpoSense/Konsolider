@@ -8,6 +8,17 @@ use app\models\ExerciceSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use arogachev\excel\import\basic\Importer;
+use yii\helpers\Html;
+use app\models\UploadForm;
+use yii\web\UploadedFile;
+use arogachev\excel\export\basic\Exporter;
+use yii\filters\AccessControl;
+use app\components\AccessRule;
+use app\models\User;
+
+
+
 
 /**
  * ExerciceController implements the CRUD actions for Exercice model.
@@ -17,7 +28,7 @@ class ExerciceController extends Controller
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
+public function behaviors()
     {
         return [
             'verbs' => [
@@ -26,6 +37,41 @@ class ExerciceController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+             'access' => [
+                'class' => AccessControl::className(),
+                   // We will override the default rule config with the new AccessRule class
+                   'ruleConfig' => [
+                       'class' => AccessRule::className(),
+                   ],
+                'only' => ['index','create', 'update', 'delete'],
+                'rules' => [
+                        [
+                        'actions' => ['index','create'],
+                        'allow' => true,
+                        // Allow users and admins to create
+                            'roles' => [
+                                User::ROLE_ADMIN
+                            ],
+                        ],
+                       [
+                           'actions' => ['update'],
+                           'allow' => true,
+                           // Allow moderators and admins to update
+                           'roles' => [
+                               User::ROLE_ADMIN
+                           ],
+                       ],
+                       [
+                           'actions' => ['delete'],
+                           'allow' => true,
+                           // Allow admins to delete
+                           'roles' => [
+                               User::ROLE_ADMIN
+                           ],
+                       ],                    
+
+                ]
+            ]
         ];
     }
 
@@ -35,10 +81,13 @@ class ExerciceController extends Controller
      */
     public function actionIndex()
     {
+        
+         $modelUpload = new UploadForm();
         $searchModel = new ExerciceSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
+            'modelUpload' => $modelUpload,
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -144,5 +193,97 @@ class ExerciceController extends Controller
         }
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    }
+        public function actionImport() {
+       $model = new UploadForm();
+       
+       if (Yii::$app->request->isPost) {
+          $model->file = UploadedFile::getInstance($model, 'file');
+          if ($model->upload()) {
+             // file is uploaded successfully
+
+            $file = $model->getFullPath(); //Yii::getAlias('@app/UnitesImport.xlsx');
+            
+            if (!isset($file) || $file == '') {
+                Yii::$app->session->setFlash('warning', 'Fichier introuvable!');
+                return $this->redirect(['index']);
+            }
+            $importer = new Importer([
+                'filePath' => $file,
+                'standardModelsConfig' => [
+                    [
+                        'className' => Unite::className(),
+                        'standardAttributesConfig' => [
+                        ],
+                    ],
+                ],
+            ]);
+            if ($importer->run()) {
+                Yii::$app->session->setFlash('success', 'Fichier importé avec succès.');
+            } else {
+                if ($importer->wrongModel) {
+                    Yii::$app->session->setFlash('error', Html::errorSummary($importer->wrongModel));
+                } else {
+                    Yii::$app->session->setFlash('warning', $importer->error);
+                }
+            }
+            // delete imported file.
+            unlink($file);
+          } else {
+              Yii::$app->session->setFlash('error', 'Error while uploading a file.');
+          }
+       }
+       
+       return $this->redirect(['index']);
+    }
+     public function actionExport() {
+        $file = Yii::getAlias('@app/ExerciceExport.xlsx');
+        $exporter = new Exporter([
+            'query' => Exercice::find(),
+            'filePath' => $file,
+//            'dataProvider' => Realisation::className(),
+            'sheetTitle' => 'Realisations',
+            'standardModelsConfig' => [
+                [
+                    'className' => Exercice::className(),
+                    'extendStandardAttributes' => false,
+//                    'attributesOrder' => ['prevue', 'realise', 'etat'],
+                    'standardAttributesConfig' => [
+                        [
+                            'name' => 'id',
+                            'label' => 'ID'
+                        ],
+                        [
+                            'name' => 'canevas',
+                            'label' => 'Canevas',
+                            'valueReplacement' => function ($model) {
+                                return $model->canevas->nom;
+                            },
+                        ],
+                        [
+                            'name' => 'rapport',
+                            'label' => 'Rapport',
+                            'valueReplacement' => function ($model) {
+                                return $model->rapport->nom;
+                            },
+                        ],
+                        [
+                            'name' => 'unite',
+                            'label' => 'Unite',
+                            'valueReplacement' => function ($model) {
+                                return $model->unite->nom;
+                            },
+                        ],
+                    ]
+                ]
+            ]
+        ]);
+        $exporter->run();
+        if (file_exists($file)) {
+            Yii::$app->response->sendFile($file);
+        } else {
+            Yii::$app->session->setFlash('warning', 'Erreur lors exportation des données');
+            return $this->redirect(['index']);
+        }
     }
 }

@@ -8,8 +8,7 @@ use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
-
+use app\components\AccessRule;
 /**
  * UserController implements the CRUD actions for User model.
  */
@@ -28,13 +27,13 @@ class UserController extends Controller
                 ],
             ],
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessRule::className(),
                 'only' => ['index', 'create', 'update', 'view'],
                 'rules' => [
                     // allow authenticated users
                     [
                         'allow' => true,
-                        'roles' => ['@']
+                        'roles' => [User::ROLE_ADMIN]
                     ]
                     // everything else is denied
                 ]

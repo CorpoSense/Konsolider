@@ -12,6 +12,10 @@ use arogachev\excel\import\basic\Importer;
 use yii\helpers\Html;
 use app\models\UploadForm;
 use yii\web\UploadedFile;
+use arogachev\excel\export\basic\Exporter;
+use yii\filters\AccessControl;
+use app\components\AccessRule;
+use app\models\User;
 
 /**
  * UniteController implements the CRUD actions for Unite model.
@@ -30,6 +34,41 @@ class UniteController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+             'access' => [
+                'class' => AccessControl::className(),
+                   // We will override the default rule config with the new AccessRule class
+                   'ruleConfig' => [
+                       'class' => AccessRule::className(),
+                   ],
+                'only' => ['index','create', 'update', 'delete'],
+                'rules' => [
+                        [
+                        'actions' => ['index','create'],
+                        'allow' => true,
+                        // Allow users and admins to create
+                            'roles' => [
+                                User::ROLE_ADMIN
+                            ],
+                        ],
+                       [
+                           'actions' => ['update'],
+                           'allow' => true,
+                           // Allow moderators and admins to update
+                           'roles' => [
+                               User::ROLE_ADMIN
+                           ],
+                       ],
+                       [
+                           'actions' => ['delete'],
+                           'allow' => true,
+                           // Allow admins to delete
+                           'roles' => [
+                               User::ROLE_ADMIN
+                           ],
+                       ],                    
+
+                ]
+            ]
         ];
     }
 
@@ -159,22 +198,6 @@ class UniteController extends Controller
                     [
                         'className' => Unite::className(),
                         'standardAttributesConfig' => [
-                            /*[
-                                'name' => 'type',
-                                'valueReplacement' => Test::getTypesList(),
-                            ],
-                            [
-                                'name' => 'description',
-                                'valueReplacement' => function ($value) {
-                                    return $value ? Html::tag('p', $value) : '';
-                                },
-                            ],
-                            [
-                                'name' => 'category_id',
-                                'valueReplacement' => function ($value) {
-                                    return Category::find()->select('id')->where(['name' => $value]);
-                                },
-                            ],*/
                         ],
                     ],
                 ],
@@ -196,6 +219,43 @@ class UniteController extends Controller
        }
        
        return $this->redirect(['index']);
+    }
+     public function actionExport() {
+        $file = Yii::getAlias('@app/UniteExport.xlsx');
+        $exporter = new Exporter([
+            'query' => Unite::find(),
+            'filePath' => $file,
+//            'dataProvider' => Realisation::className(),
+            'sheetTitle' => 'Realisations',
+            'standardModelsConfig' => [
+                [
+                    'className' => Unite::className(),
+                    'extendStandardAttributes' => false,
+//                    'attributesOrder' => ['prevue', 'realise', 'etat'],
+                    'standardAttributesConfig' => [
+                        [
+                            'name' => 'id',
+                            'label' => 'ID'
+                        ],
+                        [
+                            'name' => 'nom',
+                            'label' => 'Nom'
+                        ],
+                        [
+                            'name' => 'responsable',
+                            'label' => 'Responsable'
+                        ],
+                    ]
+                ]
+            ]
+        ]);
+        $exporter->run();
+        if (file_exists($file)) {
+            Yii::$app->response->sendFile($file);
+        } else {
+            Yii::$app->session->setFlash('warning', 'Erreur lors exportation des données');
+            return $this->redirect(['index']);
+        }
     }
     
 }

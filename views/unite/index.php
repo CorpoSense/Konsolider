@@ -24,6 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-md-6">
             <div class="pull-right">
 
+                    
                 <?php $form = ActiveForm::begin([
                     'action' => Url::to(['unite/import']), 
                     'options' => [
@@ -31,8 +32,11 @@ $this->params['breadcrumbs'][] = $this->title;
                         'class'=>'form-inline']
                     ]) ?>
                 <?= $form->field($modelUpload, 'file')->fileInput() ?>
-                <?= Html::submitInput(Yii::t('app', 'Import XLSX'), ['class' => 'btn btn-sm btn-primary']) ?>
+                 <?= Html::submitInput(Yii::t('app', 'import XLSX'), ['class' => 'btn btn-sm btn-info']) ?>
+                 <?= Html::a(Yii::t('app', 'Export XLSX'), ['export'], ['class' => 'btn btn-sm btn-primary']) ?>
                 <?php ActiveForm::end() ?>
+                   
+            </div>
                    
             </div>
             
