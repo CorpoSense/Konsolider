@@ -12,6 +12,7 @@ use arogachev\excel\import\basic\Importer;
 use yii\helpers\Html;
 use app\models\UploadForm;
 use yii\web\UploadedFile;
+use arogachev\excel\export\basic\Exporter;
 
 /**
  * UniteController implements the CRUD actions for Unite model.
@@ -159,22 +160,6 @@ class UniteController extends Controller
                     [
                         'className' => Unite::className(),
                         'standardAttributesConfig' => [
-                            /*[
-                                'name' => 'type',
-                                'valueReplacement' => Test::getTypesList(),
-                            ],
-                            [
-                                'name' => 'description',
-                                'valueReplacement' => function ($value) {
-                                    return $value ? Html::tag('p', $value) : '';
-                                },
-                            ],
-                            [
-                                'name' => 'category_id',
-                                'valueReplacement' => function ($value) {
-                                    return Category::find()->select('id')->where(['name' => $value]);
-                                },
-                            ],*/
                         ],
                     ],
                 ],
@@ -196,6 +181,43 @@ class UniteController extends Controller
        }
        
        return $this->redirect(['index']);
+    }
+     public function actionExport() {
+        $file = Yii::getAlias('@app/UniteExport.xlsx');
+        $exporter = new Exporter([
+            'query' => Unite::find(),
+            'filePath' => $file,
+//            'dataProvider' => Realisation::className(),
+            'sheetTitle' => 'Realisations',
+            'standardModelsConfig' => [
+                [
+                    'className' => Unite::className(),
+                    'extendStandardAttributes' => false,
+//                    'attributesOrder' => ['prevue', 'realise', 'etat'],
+                    'standardAttributesConfig' => [
+                        [
+                            'name' => 'id',
+                            'label' => 'ID'
+                        ],
+                        [
+                            'name' => 'nom',
+                            'label' => 'Nom'
+                        ],
+                        [
+                            'name' => 'responsable',
+                            'label' => 'Responsable'
+                        ],
+                    ]
+                ]
+            ]
+        ]);
+        $exporter->run();
+        if (file_exists($file)) {
+            Yii::$app->response->sendFile($file);
+        } else {
+            Yii::$app->session->setFlash('warning', 'Erreur lors exportation des données');
+            return $this->redirect(['index']);
+        }
     }
     
 }

@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= Html::a(Yii::t('app', 'Create Realisation'), ['create'], ['class' => 'btn btn-success']) ?>
         </div>
         <div class="col-md-6">
-            <?= Html::a(Yii::t('app', 'Export XLSX'), ['export'], ['class' => 'btn btn-info pull-right']) ?>
+            <?= Html::a(Yii::t('app', 'import XLSX'), ['export'], ['class' => 'btn btn-info pull-right']) ?>
             
         </div>
     </div>
