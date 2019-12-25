@@ -16,7 +16,6 @@ use arogachev\excel\export\basic\Exporter;
 use yii\filters\AccessControl;
 use app\components\AccessRule;
 use app\models\User;
-use yii\filters\VerbFilter;
 
 /**
  * RapportController implements the CRUD actions for Rapport model.
