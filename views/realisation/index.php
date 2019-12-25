@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\widgets\ActiveForm;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\RealisationSearch */
@@ -19,8 +21,19 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= Html::a(Yii::t('app', 'Create Realisation'), ['create'], ['class' => 'btn btn-success']) ?>
         </div>
         <div class="col-md-6">
-            <?= Html::a(Yii::t('app', 'import XLSX'), ['export'], ['class' => 'btn btn-info pull-right']) ?>
-            
+            <div class="pull-right">
+                <?php $form = ActiveForm::begin([
+                    'action' => Url::to(['realisation/import']), 
+                    'options' => [
+                        'enctype' => 'multipart/form-data', 
+                        'class'=>'form-inline']
+                    ]) ?>
+                <?= $form->field($modelUpload, 'file')->fileInput() ?>
+                  <?= Html::submitInput(Yii::t('app', 'import XLSX'), ['class' => 'btn btn-sm btn-info']) ?>
+                  <?= Html::a(Yii::t('app', 'Export XLSX'), ['export'], ['class' => 'btn btn-sm btn-primary']) ?>
+                <?php ActiveForm::end() ?>
+                   
+            </div>
         </div>
     </div>
 

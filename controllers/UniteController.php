@@ -13,6 +13,9 @@ use yii\helpers\Html;
 use app\models\UploadForm;
 use yii\web\UploadedFile;
 use arogachev\excel\export\basic\Exporter;
+use yii\filters\AccessControl;
+use app\components\AccessRule;
+use app\models\User;
 
 /**
  * UniteController implements the CRUD actions for Unite model.
@@ -31,6 +34,41 @@ class UniteController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+             'access' => [
+                'class' => AccessControl::className(),
+                   // We will override the default rule config with the new AccessRule class
+                   'ruleConfig' => [
+                       'class' => AccessRule::className(),
+                   ],
+                'only' => ['index','create', 'update', 'delete'],
+                'rules' => [
+                        [
+                        'actions' => ['index','create'],
+                        'allow' => true,
+                        // Allow users and admins to create
+                            'roles' => [
+                                User::ROLE_ADMIN
+                            ],
+                        ],
+                       [
+                           'actions' => ['update'],
+                           'allow' => true,
+                           // Allow moderators and admins to update
+                           'roles' => [
+                               User::ROLE_ADMIN
+                           ],
+                       ],
+                       [
+                           'actions' => ['delete'],
+                           'allow' => true,
+                           // Allow admins to delete
+                           'roles' => [
+                               User::ROLE_ADMIN
+                           ],
+                       ],                    
+
+                ]
+            ]
         ];
     }
 
