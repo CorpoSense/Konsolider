@@ -255,7 +255,11 @@ class IndicateurController extends Controller
                         ],
                          [
                             'name' => 'canvevas_id',
-                            'label' => 'Canevas_id',
+                            'label' => 'Canevas',
+                            'valueReplacement' => function ($model) {
+                                return $model->canvevas->nom;
+                            },
+                             
                           
                         ],
                     ]
