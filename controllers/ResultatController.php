@@ -79,15 +79,15 @@ public function behaviors()
         
         $canevas_id = isset(Yii::$app->request->queryParams['canevas_id'])?
                 ((int) Yii::$app->request->queryParams['canevas_id']): (Canevas::find()->limit(1)->one()->id);
-        $rapportId = isset(Yii::$app->request->post()['FilterConsolide']['rapport_id'])?
-                ((int) Yii::$app->request->post()['FilterConsolide']['rapport_id']): (Rapport::find()->limit(1)->one()->id);
+        $rapportId = isset(Yii::$app->request->queryParams['rapport_id'])?
+                ((int) Yii::$app->request->queryParams['rapport_id']): (Rapport::find()->limit(1)->one()->id);
         
         $query = Realisation::find()->select(
                 ['indicateur_id', 'sum(prevue) as prevue', 'sum(realise) as realise'])
                 ->from('realisation')
                 ->where([
                     'canevas_id' => $canevas_id,
-//                    'rapport_id' => $rapportId,
+                    'rapport_id' => $rapportId,
 //                    'exercice_id' => 39,
                     'etat' => 1
                     ])                

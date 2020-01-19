@@ -65,10 +65,21 @@ foreach ($canevas as $caneva_id => $caneva_nom) {
     array_push($items,
         [
             'label' => $caneva_nom,
-            'url' => Url::to(['resultat/index', 'canevas_id' => $caneva_id]),
+            'url' => Url::to(['resultat/index',
+                'canevas_id' => $caneva_id,
+                'rapport_id' => $filterModel->rapport_id
+            ]),
             'active' => ($caneva_id == $canevaId)
         ]            
     );
+}
+
+foreach ($rapports as $rapport_id => $rapport_nom) {
+    if ($filterModel->rapport_id == $rapport_id){
+        $rapport = app\models\Rapport::findOne($rapport_id);
+        echo "<p><h4>$rapport->nom</h4> du: <strong>$rapport->debut</strong> au: <strong>$rapport->fin</strong></p>";
+        break;
+    }
 }
 
 echo Tabs::widget([
