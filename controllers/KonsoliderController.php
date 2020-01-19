@@ -74,7 +74,7 @@ class KonsoliderController extends \yii\web\Controller
           }
       
            $json_string = json_encode($array_result, JSON_PRETTY_PRINT);
-           echo $json_string;
+//           echo $json_string;
             return $this->render('index', [
             'results' => $array_result,
              'filterModel' => $filterModel,
